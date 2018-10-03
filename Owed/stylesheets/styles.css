@@ -1,0 +1,469 @@
+header {
+  border-bottom: 2px solid #e6e6e6;
+  padding-bottom: 0;
+  flex: 0 1 auto;
+  position fixed;
+}
+
+footer {
+  border-top: 2px solid #e6e6e6;
+  padding-top: 0;
+  position: fixed;
+  flex: 0 1 auto;
+}
+
+.sign-up-button {
+  background-color: white;
+  border-style: none;
+  color: #0073e6;
+  font-family: Marker Felt;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 24px;
+  margin: 20px 6px;
+  margin-left: 150px;
+  cursor: pointer;
+  float: right;
+  width: 175px;
+}
+
+.log-out-button {
+  background-color: white;
+  border-style: none;
+  color: #0073e6;
+  font-family: Marker Felt;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 24px;
+  margin: 20px 6px;
+  margin-left: 150px;
+  cursor: pointer;
+  float: right;
+  width: 175px;
+}
+
+.log-out-button:hover {
+  background-color: white;
+  color: #cce5ff;
+}
+
+.sign-up-button:hover {
+  background-color: white;
+  color: #cce5ff;
+}
+
+.logo {
+  background-color: white;
+  border-style: none;
+  color: #0073e6;
+  font-family: Marker Felt;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 36px;
+  margin: 10px 6px;
+  cursor: pointer;
+  float: left;
+  width: 250px;
+}
+
+.form-group {}
+
+fieldset {
+  font-size: 24px;
+  display: block;
+  margin: auto;
+  padding: 50px;
+  text-align: center;
+  width: 500px;
+  background-color: #cce5ff;
+}
+
+fieldset, label {
+  font-family: Marker Felt;
+  margin-top: 20px;
+}
+
+footer {
+  bottom: 0;
+  color: #0073e6;
+  font-family: Marker Felt;
+  font-size: 19px;
+  height: 150px;
+  padding: 8px;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+}
+
+.btn-primary:hover {
+  background-color: white;
+  color: #0073e6;
+}
+
+.modal {
+  background-color: rgb(45, 62, 79);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
+  display: none;
+  /* Hidden by default */
+  height: 100%;
+  /* Full height */
+  left: 0;
+  overflow: auto;
+  /* Enable scroll if needed */
+  position: fixed;
+  /* Stay in place */
+  top: 0;
+  width: 100%;
+  /* Full width */
+  z-index: 1;
+  /* Sit on top */
+}
+
+.modal-title {
+  font-family: Marker Felt;
+  color: #0073e6;
+}
+
+.modal-body {
+  font-size: 20px;
+  font-family: Marker Felt;
+  color: #0073e6;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  border: 10px solid #888;
+  margin: 15% auto;
+  /* 15% from the top and centered */
+  padding: 20px;
+}
+
+.modal-title {
+  text-align: center;
+  font-family: Marker Felt;
+}
+
+.modal-footer {
+  text-align: center;
+  font-family: Marker Felt;
+}
+
+.signup {
+  color: #0073e6;
+  float: right;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.signup:hover,
+.signup:focus {
+  color: #cce5ff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* The Close Button */
+.cancelbtn {
+  color: #0073e6;
+  float: right;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.cancelbtn:hover,
+.cancelbtn:focus {
+  color: #cce5ff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.col-sm-3 {
+  color: #0073e6;
+  font-size: 18px;
+  font-family: Marker Felt;
+  font-weight: lighter;
+}
+
+.col-sm-12 {
+  color: #0073e6;
+  font-size: 18px;
+  font-family: Marker Felt;
+  font-weight: lighter;
+}
+
+/* Home Menu Button */
+.glyphicon-align-justify {
+  border-color: white;
+  font-size: 30px;
+  margin-top: 12px;
+  color: #0073e6;
+}
+
+/* Home Menu Button */
+.glyphicon-align-justify:hover {
+  background-color: white;
+  color: #cce5ff;
+}
+
+.glyphicon-plus {
+  border-color: white;
+  background-color: white;
+  font-size: 20px;
+  margin-top: 15px;
+  color: #0073e6;
+  float: right;
+}
+
+.glyphicon-plus:hover {
+  background-color: white;
+  color: #cce5ff;
+}
+
+.fa {
+  padding: 0px;
+  font-size: 30px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  margin: 0px;
+}
+
+.fa:hover {
+  opacity: 0.7;
+}
+
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+}
+
+.fa-twitter {
+  background: #55ACEE;
+  color: white;
+}
+
+.fa-linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+.fa-youtube {
+  background: #bb0000;
+  color: white;
+}
+
+.fa-instagram {
+  background: #125688;
+  color: white;
+}
+
+.fa-pinterest {
+  background: #cb2027;
+  color: white;
+}
+
+.fa-snapchat-ghost {
+  background: #fffc00;
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+
+html, body {
+  height: 100%;
+}
+
+
+.shadow {
+  box-shadow: 0px 0px 5px 0px;
+  border-color: #e6e6e6;
+  border-style: solid;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  float: left;
+}
+
+h2, a {
+  color: #fff;
+}
+
+.container-widget .panel {
+  margin-bottom: 15px;
+  border-radius: 0px;
+  border: 1px #e6e9ee solid;
+}
+
+.panel-info {
+  background: #0073e6 url(http://themesground.com/modern/demo1/HTML/img/intro-bg.png) repeat top left;
+  color: #fff;
+}
+
+.panel-success {
+  background: #1ab394 url(http://themesground.com/modern/demo1/HTML/img/intro-bg.png) repeat top left;
+  color: black;
+}
+
+.panel-widget {
+  overflow: hidden;
+  border: none;
+}
+
+.panel .panel-title {
+  color: #0073e6;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0px;
+}
+
+.panel-title {
+  font-family: Marker Felt;
+  color: #58666e;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 16px 20px;
+  margin: 0px;
+  background: #fff;
+  margin-bottom: 5px;
+  border-bottom: 3px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  letter-spacing: 1px;
+}
+
+.panel-title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 24px;
+  color: inherit;
+}
+
+.panel-body {
+
+}
+
+.basic-list {
+  margin-bottom: 0;
+  padding: 0;
+}
+
+ul, ol {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+/* Basic List */
+.basic-list {
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.basic-list li {
+  display: block;
+  position: relative;
+  padding: 12px 0;
+  text-align: center;
+}
+
+.basic-list li:last-child {
+  border-bottom: none;
+}
+
+.basic-list .right {
+  position: absolute;
+  right: 0;
+  display: inline-block;
+  padding: 0;
+  font-weight: 600;
+}
+
+/* Friends List Content*/
+.image-list li {
+  padding:0;
+}
+
+.image-list .img {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 0;
+  border-radius: 0px;
+}
+
+.image-list .desc {
+  font-size: 12px;
+  opacity: 0.8;
+  display: block;
+}
+
+.container-widget {
+
+}
+
+/* Friends List column/panel */
+.panel-widget {
+  position: relative;
+  width: 200%;
+  height: 105%;
+}
+
+/* Events column/panel */
+.column {
+  float: left;
+  width: 91.6%;
+  padding: 0;
+
+  color: #0073e6;
+}
+
+/* Border under event column */
+.text-center {
+  border-bottom: 3px solid #e6e6e6;
+}
+
+.row {
+  float: left;
+  width: 100%;
+  padding: 0;
+  color: #0073e6;
+}
+
+.circle {
+   width: 80px;
+   height: 80px;
+   background: white;
+   -moz-border-radius: 70px;
+   -webkit-border-radius: 70px;
+   border-radius: 70px;
+   margin-top: 30px;
+   margin-left: 25%
+}
+
+.add-friend {
+  text-align: center;
+  margin-top: 75px;
+}
+
+.friend {
+  text-align: center;
+  font-weight: bold;
+  font-size: 56px;
+  color: #0073e6;
+}
+
+.friend:hover {
+  color: #cce5ff;
+  cursor: pointer;
+  text-decoration: none;
+}
