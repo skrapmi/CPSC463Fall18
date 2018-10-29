@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="stylesheets/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="datepicker.css">
+
+
+  <title>Home</title>
+</head>
+
+<body>
+  <header>
+    <div class="top-tray">
+      <input type="text" name="" class="log-out-button" value="Log Out" onclick="document.getElementById('').style.display='block'" style="width:auto;">
+      <input type="text" class="logo" value="*Placeholder*">
+    </div>
+  </header>
+
+
+
+
+<!--Friends List-->
+  <div class="row">
+    <div class="col-md-1 container-widget">
+      <div class="panel panel-info panel-widget">
+        <div class="panel-body">
+          <ul class="basic-list image-list">
+            <!--<li><b style="font-size:20px">John Doe</b><span class="desc">Designer</span>
+              <p><span class="fa fa-plus"style="font-size:20px"></span><span class="fa fa-trash-o"style="font-size:20px"></span></p>
+            </li>-->
+            <div class="circle">
+              <div class="friend">
+                <p>S</p>
+              </div>
+            </div>
+            <div class="circle">
+              <div class="friend">
+                <p style="color:orange">D</p>
+              </div>
+            </div>
+            <div class="circle">
+              <div class="friend">
+                <p style="color:red">B</p>
+              </div>
+            </div>
+            <div class="circle">
+              <div class="friend">
+                <p style="color:green">A</p>
+              </div>
+            </div>
+            <div class="circle">
+              <div class="friend">
+                <p style="color:purple">P</p>
+              </div>
+            </div>
+            <div class="add-friend">
+              <li> <p class="fa fa-plus"></p><span><b style="font-size:20px">Add Friend</b></span></li>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="panel-title text-center">
+        <p>Events<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <!--Event Modal-->
+  <div class="container">
+    <div class="row">
+      <div id="id03" class="modal w3-animate-opacity" role="dialog">
+        <div class="modal-dialog ">
+          <form class="modal-content" action="/action_page.php">
+            <!--Modal Header-->
+            <div class="modal-header">
+              <h4 class="modal-title">Create A New Event</h4>
+            </div>
+            <!--Modal Body-->
+            <div class="modal-body">
+              <p>Collaborator: <input type="text" placeholder="Search.."></p>
+                 <p>Date: <input type="text" id="datepicker" autocomplete="off"></p>
+                <div>
+                  <p>Event Name: <input type="text" Placeholder="Event Description" required></p>
+                </div>
+                <hr>
+                <p>Upload a Receipt:</p>
+                <input type="file" name="fileToUpload" id="fileToUpload">
+                <input type="submit" value="Upload Image" name="submit">
+            </div>
+            <!--Modal Footer-->
+            <div class="modal-footer">
+              <button type="submit" class="signup"><i class="fa fa-check-square-o"></i>Submit</button>
+              <button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn"><i class="fa fa-times-rectangle-o"></i> Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="bottom-tray">
+      <p>About Us | Jobs | How It Works | Contact Us</p>
+      <p>&copy 2018 *Placeholder*</p>
+      <a href="#" class="fa fa-facebook"></a>
+      <a href="#" class="fa fa-twitter"></a>
+      <a href="#" class="fa fa-snapchat-ghost"></a>
+      <a href="#" class="fa fa-linkedin"></a>
+      <a href="#" class="fa fa-youtube"></a>
+      <a href="#" class="fa fa-instagram"></a>
+      <a href="#" class="fa fa-pinterest"></a>
+    </div>
+  </footer>
+
+<script src="scripts/main.js" charset="utf-8"></script>
+</body>
+
+</html>
