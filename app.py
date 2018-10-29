@@ -115,9 +115,13 @@ def userOwes(name):
     results = ""
     for i in range (0, count):
         results += str(uscur.execute('''SELECT * FROM items''').fetchall()[i][1])
-        results += " $"
+        results += ", $"
         results += str(uscur.execute('''SELECT * FROM items''').fetchall()[i][3])
-        results += "\n"
+        results += ", owed to "
+        owedid = str(uscur.execute('''SELECT * FROM items''').fetchall()[i][4])
+        owed = str(cur.execute('''SELECT username FROM userlogin WHERE user_id=(?)''', [owedid]).fetchone()[0])
+        results += owed
+        results += "  |  "
     usdb.close()
     log.close()
     print (results)
