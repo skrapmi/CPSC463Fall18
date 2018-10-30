@@ -40,17 +40,22 @@ def updateCount(userlist):
 def createUser(na,pw):
     log = open_db('login.db')
     users = log.execute("SELECT * FROM userlogin")
-    usercount = 0
+
+    #usercount = 0
     cur = log.cursor()
-    usercount = updateCount(users)
-    usercount += 1
+    #usercount = updateCount(users)
+    #usercount += 1
     # Create a new userX.db that copies from the base
-    nuser = open_db('user' + str(usercount) + '.db')
+    #nuser = open_db('user' + str(usercount) + '.db')
+
+    #changed user length access
+    nuser = open_db('user' + str(len(users)+1) + '.db')
+
     nuser.execute('''CREATE TABLE "eventlist" (
-        `eventlist_id` INTEGER NOT NULL, 
+        `eventlist_id` INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, 
         `events_id` INTEGER NOT NULL, 
         `eventname` TEXT NOT NULL, 
-        `date` DATE NOT NULL, PRIMARY KEY(`eventlist_id`) 
+        `date` DATE NOT NULL 
         )
         ''')
     nuser.execute('''CREATE TABLE "events" (
@@ -135,20 +140,19 @@ def validateUser(na, pw):
     if (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [na]).fetchall()) != "[]"):
         dbuser = (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [na]).fetchone()[0]))
         dbpass = (str(cur.execute('''SELECT password FROM userlogin WHERE username=(?)''', [na]).fetchone()[0]))
-    if(pw == dbpass):
-        match = True
-    if match == True:
-        return userOwes(na)
+        # removed add extra code
+        if(pw == dbpass): 
+            return render_template('home.html') #userOwes(na)
     log.close()
-    print(match)
-    return render_template('result.html')
+    print("no match")
+    return render_template('index.html')
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     user = request.args.get('username')
     userpass = request.args.get('password')
     if (user != None) and (userpass != None):
-        validateUser(user,userpass)
+        #validateUser(user,userpass)  #not needed 
         return (validateUser(user, userpass))
     form = ContactForm()
     return render_template('index.html', form = form)
