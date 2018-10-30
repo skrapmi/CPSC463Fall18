@@ -43,13 +43,13 @@ def createUser(na,pw):
 
     #usercount = 0
     cur = log.cursor()
-    #usercount = updateCount(users)
-    #usercount += 1
+    usercount = updateCount(users)
+    usercount += 1
     # Create a new userX.db that copies from the base
-    #nuser = open_db('user' + str(usercount) + '.db')
+    nuser = open_db('user' + str(usercount) + '.db')
 
     #changed user length access
-    nuser = open_db('user' + str(len(users)+1) + '.db')
+    #nuser = open_db('user' + str(len(users)+1) + '.db')
 
     nuser.execute('''CREATE TABLE "eventlist" (
         `eventlist_id` INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, 
@@ -117,21 +117,31 @@ def userOwes(name):
     db = str(cur.execute('''SELECT userdbfilename FROM userlogin WHERE username=(?)''', [name]).fetchone()[0])
     usdb = open_db(db)
     uscur = usdb.cursor()
-    count = int(uscur.execute('''SELECT COUNT(*) FROM items''').fetchone()[0])
-    results = ""
+
+    # count = int(uscur.execute('''SELECT COUNT(*) FROM items''').fetchone()[0])
+    # results = ""
+    # for i in range (0, count):
+    #     results += str(uscur.execute('''SELECT * FROM items''').fetchall()[i][1])
+    #     results += ", $"
+    #     results += str(uscur.execute('''SELECT * FROM items''').fetchall()[i][3])
+    #     results += ", owed to "
+    #     owedid = str(uscur.execute('''SELECT * FROM items''').fetchall()[i][4])
+    #     owed = str(cur.execute('''SELECT username FROM userlogin WHERE user_id=(?)''', [owedid]).fetchone()[0])
+    #     results += owed
+    #     results += "  |  "
+
+    count = int(uscur.execute('''SELECT COUNT(*) FROM eventlist''').fetchone()[0])
+    results = []
+    temp = ()
     for i in range (0, count):
-        results += str(uscur.execute('''SELECT * FROM items''').fetchall()[i][1])
-        results += ", $"
-        results += str(uscur.execute('''SELECT * FROM items''').fetchall()[i][3])
-        results += ", owed to "
-        owedid = str(uscur.execute('''SELECT * FROM items''').fetchall()[i][4])
-        owed = str(cur.execute('''SELECT username FROM userlogin WHERE user_id=(?)''', [owedid]).fetchone()[0])
-        results += owed
-        results += "  |  "
+        #owedid = str(uscur.execute('''SELECT * FROM eventlist''').fetchall()[i][4])
+        #owed = str(cur.execute('''SELECT username FROM userlogin WHERE user_id=(?)''', [owedid]).fetchone()[0])
+        temp = (str(uscur.execute('''SELECT * FROM eventlist''').fetchall()[i][2]), str(uscur.execute('''SELECT * FROM eventlist''').fetchall()[i][3]),str(uscur.execute('''SELECT * FROM eventlist''').fetchall()[i][1]))
+        results.append(temp)
     usdb.close()
     log.close()
     print (results)
-    return render_template("result.html", msg = results)
+    return render_template("home.html", msg = results, count = count)
     
 def validateUser(na, pw):
     match = False
@@ -143,7 +153,7 @@ def validateUser(na, pw):
         dbpass = (str(cur.execute('''SELECT password FROM userlogin WHERE username=(?)''', [na]).fetchone()[0]))
         # removed add extra code
         if(pw == dbpass): 
-            return render_template('home.html') #userOwes(na)
+            return userOwes(na)
     log.close()
     print("no match")
     return render_template('index.html')
@@ -157,6 +167,10 @@ def home():
         return (validateUser(user, userpass))
     form = ContactForm()
     return render_template('index.html', form = form)
+
+@app.route('/home', methods=['GET' , 'POST'])
+def eventlist():
+    event_id = request.args.get('button')
 
 # endpoint to show all users
 @app.route("/users", methods=["GET"])

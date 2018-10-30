@@ -29,11 +29,12 @@
 </head>
 
 <body>
-
+  <!--Result : {{ msg }}
+  Count : {{count}}-->
   <header>
     <div class="top-tray">
       <input type="text" name="" class="log-out-button" value="Log Out" onclick="document.getElementById('').style.display='block'" style="width:auto;">
-      <input type="text" class="logo" value="*Placeholder*">
+      <input type="text" class="logo" value="Events Page">
     </div>
   </header>
 
@@ -83,21 +84,20 @@
 
     <div class="column">
       <div class="panel-title text-center">
-        <p>Events<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
+        <p>Add New Event<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
       </div>
-      <div class="col-sm-offset-4" style="font-size: 26px">
+      <!-- <div class="col-sm-offset-4" style="font-size: 26px">
         <label for="date">Date:</label>
         <input type="date" n1me="" value="">
-      </div>
-      <div class="col-sm-offset-3">
-        <button type="button" name="button" class="block" style="font-size:24px">Event 1    <span class="fa fa-money" style="font-size:26px" style="cursor:pointer" onclick="document.getElementById('id04').style.display='block'"></span></button>
-      </div>
-      <div class="col-sm-offset-3">
-        <button type="button" name="button" class="block" style="font-size:24px">Event 2    <span class="fa fa-money" style="font-size:26px" style="cursor:pointer" onclick="document.getElementById('id04').style.display='block'"></span></button>
-      </div>
-      <div class="col-sm-offset-3">
+      </div> -->
+      {% for i in msg %}
+        <div class="col-sm-offset-3">
+          <button type="submit" name="button" class="block" style="font-size:24px">{{i[0]}} on {{i[1]}} </button>
+        </div>
+      {% endfor %}
+      <!--div class="col-sm-offset-3">
         <button type="button" name="button" class="block" style="font-size:24px">Event 3    <span class="fa fa-money" style="font-size:26px" style="cursor:pointer" onclick="document.getElementById('id04').style.display='block'"></span></button>
-      </div>
+      </div-->
     </div>
   </div>
 
