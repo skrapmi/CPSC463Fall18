@@ -100,6 +100,7 @@ def createUser(na,pw):
     primaryuser_id INTEGER NOT NULL DEFAULT 0
     )
     ''')
+
     ndbname = ('user' + str(usercount) + '.db')
     # Find the highest userID
     cur.execute('''SELECT user_id from userlogin ORDER BY user_id DESC LIMIT 1''')
