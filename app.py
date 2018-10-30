@@ -144,16 +144,20 @@ def userOwes(name):
     return render_template("home.html", msg = results, count = count)
     
 def validateUser(na, pw):
-    match = False
+    dbuser = None
     dbpass = None
     log = open_db('login.db')
+    uscur = log.cursor()
     cur = log.cursor()
-    if (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [na]).fetchall()) != "[]"):
-        dbuser = (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [na]).fetchone()[0]))
-        dbpass = (str(cur.execute('''SELECT password FROM userlogin WHERE username=(?)''', [na]).fetchone()[0]))
-        # removed add extra code
-        if(pw == dbpass): 
-            return userOwes(na)
+    count = int(uscur.execute('''SELECT COUNT(*) FROM userlogin''').fetchone()[0])
+    for i in range ( 0, count ):
+        #if (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [na]).fetchall()[]) != "[]"):
+        if na == str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [na]).fetchone()[i]):
+            #dbuser = (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [na]).fetchone()[i]))
+            dbpass = (str(cur.execute('''SELECT password FROM userlogin WHERE username=(?)''', [na]).fetchone()[i]))
+            # removed add extra code
+            if(pw == dbpass): 
+                return userOwes(na)
     log.close()
     print("no match")
     return render_template('index.html')
