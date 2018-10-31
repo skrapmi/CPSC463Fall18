@@ -195,7 +195,7 @@ def display_items():
     results = []
     temp = []
     associate_event = []
-    for i in range (0, count):
+    for i in range (count):
         if event_num == str(uscur.execute('''SELECT * FROM events''').fetchall()[i][0]):
             temp = [str(uscur.execute('''SELECT * FROM events''').fetchall()[i][0]), \
                     str(uscur.execute('''SELECT * FROM events''').fetchall()[i][1]), \
@@ -205,10 +205,13 @@ def display_items():
             for j in range (assoc_count):
                 if associate_event[0] == int(uscur.execute('''SELECT * FROM eventsuserlist''').fetchall()[j][2]):
                     associate_event.append(int(uscur.execute('''SELECT * FROM eventsuserlist''').fetchall()[j][1]))
+                    print(associate_event)
             itemcount = int(uscur.execute('''SELECT COUNT(*) FROM events''').fetchone()[0])
-            for i in range (0, itemcount):
+            for i in range (itemcount):
                 subitemcount = int(cur.execute('''SELECT COUNT(*) FROM userlogin''').fetchone()[0])
                 for k in range (subitemcount):
+                    print(associate_event[1])
+                    print(int(uscur.execute('''SELECT * FROM items''').fetchall()[i][0]))
                     if str(cur.execute('''SELECT * FROM userlogin''').fetchall()[k][0]) == str(uscur.execute('''SELECT * FROM items''').fetchall()[i][4]) and \
                         associate_event[1] == int(uscur.execute('''SELECT * FROM items''').fetchall()[i][0]):
                         temp2 = (str(uscur.execute('''SELECT * FROM items''').fetchall()[i][0]), \
@@ -218,7 +221,6 @@ def display_items():
                                 str(cur.execute('''SELECT * FROM userlogin''').fetchall()[k][1]))
                         break
                 results.append(temp2)
-                print(temp2)
     usdb.close()
     return render_template("event.html", msg2 = results, msg = temp)
 
