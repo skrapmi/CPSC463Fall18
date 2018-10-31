@@ -24,7 +24,7 @@
 
 
 
-  <title>Home</title>
+  <title>{{msg[1]}}</title>
 
 </head>
 
@@ -32,7 +32,7 @@
   <header>
     <div class="top-tray">
       <input type="text" name="" class="log-out-button" value="Log Out" onclick="document.getElementById('').style.display='block'" style="width:auto;">
-      <input type="text" class="logo" value="Events Page">
+      <input type="text" class="logo" value="Items Page">
     </div>
   </header>
 
@@ -82,12 +82,15 @@
 
     <div class="column">
       <div class="panel-title text-center">
-        <p>Add New Event<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
+        <p>Add New Item<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
       </div>
-      <form method="POST" action='/eventitems/'>
-        {% for i in msg %}
+      <form methon="POST">
+        <div class="col-sm-offset-3">
+          <label for="Item" style="font-size:32px">{{msg[1]}} Event</label>  
+        </div>
+        {% for i in msg2 %}
           <div class="col-sm-offset-3">
-            <input type="submit" name="button" class="block" value="{{i[0]}} on {{i[1]}}"> <!--style="font-size:24px">{{i[0]}} on {{i[1]}}</button>-->
+            <button type="submit" name="button" class="block" style="font-size:24px">{{i[1]}} {{i[3]}} {{i[4]}} </button>
           </div>
         {% endfor %}
       </form>
@@ -104,16 +107,16 @@
     <div class="row">
       <div id="id03" class="modal w3-animate-opacity" role="dialog">
         <div class="modal-dialog ">
-          <form class="modal-content" action="/action_page.php">
+          <form class="modal-content" action="/add/">
             <!--Modal Header-->
             <div class="modal-header">
               <h4 class="modal-title">Create A New Event</h4>
             </div>
             <!--Modal Body-->
             <div class="modal-body">
-              <p>Event Name: <input type="text" name="" value="" required></p>
+              <p>Item Name: <input type="text" name="" value="" required></p>
               <p>Collaborator: <input type="text" autocomplete="off" name="" value="" required></p>
-              <p>Event Date: <input type="text" id="datepicker" autocomplete="off" name="date" value="" required></p>
+              <!--<p>Event Date: <input type="text" id="datepicker" autocomplete="off" name="date" value="" required></p>-->
 
                 <hr>
                 <p>Upload a Receipt:</p>
