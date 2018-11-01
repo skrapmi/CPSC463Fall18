@@ -37,6 +37,11 @@ def createUser(na,pw):
     users = logindb.execute("SELECT * FROM userlogin")
     usercount = int(logindb.execute('''SELECT COUNT(*) FROM userlogin''').fetchone()[0])
     cur = logindb.cursor()
+
+    for i in range (usercount):
+        if na == str(logindb.execute('''SELECT username FROM userlogin WHERE username=(?)''', [na]).fetchone()[i]):
+            return
+        
     usercount += 1
     # Create a new userX.db that copies from the base
     nuser = open_db('user' + str(usercount) + '.db')
