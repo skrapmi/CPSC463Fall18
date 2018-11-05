@@ -1,2 +1,0 @@
-# 463SoftwareTesting
-Group Project

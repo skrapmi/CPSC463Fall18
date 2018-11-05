@@ -7,30 +7,34 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="stylesheets/styles.css">
+  <link rel="stylesheet" href="../static/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <link rel="stylesheet" href="datepicker.css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ <link rel="stylesheet" href="/resources/demos/style.css">
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
 
 
   <title>Home</title>
+
 </head>
 
 <body>
   <header>
     <div class="top-tray">
       <input type="text" name="" class="log-out-button" value="Log Out" onclick="document.getElementById('').style.display='block'" style="width:auto;">
-      <input type="text" class="logo" value="*Placeholder*">
+      <input type="text" class="logo" value="Events Page">
     </div>
   </header>
-
-
 
 
 <!--Friends List-->
@@ -38,46 +42,55 @@
     <div class="col-md-1 container-widget">
       <div class="panel panel-info panel-widget">
         <div class="panel-body">
-          <ul class="basic-list image-list">
-            <!--<li><b style="font-size:20px">John Doe</b><span class="desc">Designer</span>
-              <p><span class="fa fa-plus"style="font-size:20px"></span><span class="fa fa-trash-o"style="font-size:20px"></span></p>
-            </li>-->
-            <div class="circle">
-              <div class="friend">
-                <p>S</p>
-              </div>
-            </div>
-            <div class="circle">
-              <div class="friend">
-                <p style="color:orange">D</p>
-              </div>
-            </div>
-            <div class="circle">
-              <div class="friend">
-                <p style="color:red">B</p>
-              </div>
-            </div>
-            <div class="circle">
-              <div class="friend">
-                <p style="color:green">A</p>
-              </div>
-            </div>
-            <div class="circle">
-              <div class="friend">
-                <p style="color:purple">P</p>
-              </div>
-            </div>
-            <div class="add-friend">
-              <li> <p class="fa fa-plus"></p><span><b style="font-size:20px">Add Friend</b></span></li>
-            </div>
-          </ul>
+          <div id="hacker-list">
+            <ul class="list">
+                  <li data-id="1">
+                    <div class="friend">
+                      <p><img class="friend-icon" src="{{ url_for('static', filename='cpt_america.png') }}"/><a href="#" class="friend-name">Johnny</a></p>
+                    </div>
+                  </li>
+                  <li data-id="2">
+                    <div class="friend">
+                      <p><img class="friend-icon" src="{{ url_for('static', filename='ironman.png') }}"/><a href="#" class="friend-name">Sandra</a></p>
+                    </div>
+                  </li>
+                  <li data-id="3">
+                    <div class="friend">
+                      <p><img class="friend-icon" src="{{ url_for('static', filename='thor.png') }}"/><a href="#" class="friend-name">Ralph</a></p>
+                    </div>
+                  </li>
+                  <li data-id="4">
+                    <div class="friend">
+                      <p><img class="friend-icon" src="{{ url_for('static', filename='iron-man-2507706_1280.png') }}"/><a href="#" class="friend-name">Andrew</a></p>
+                    </div>
+                  </li>
+                  <li data-id="5">
+                    <div class="friend">
+                      <p><img class="friend-icon" src="{{ url_for('static', filename='captain-marvel-2977923_1280.jpg') }}"/><a href="#" class="friend-name">Sasha</a></p>
+                    </div>
+                  </li>
+                  <li data-id="6">
+                    <div class="friend">
+                      <p><img class="friend-icon" src="{{ url_for('static', filename='spiderman-3309033_1280.jpg') }}"/><a href="#" class="friend-name">Peter</a></p>
+                    </div>
+                  </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="column">
       <div class="panel-title text-center">
-        <p>Events<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
+        <p>Add New Event<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
       </div>
+      <form method="POST" action='/eventitems/'>
+        {% for i in msg %}
+          <div class="col-sm-offset-3">
+            <input type="submit" name="button" class="block" value="{{i[0]}} on {{i[1]}}"> <!--style="font-size:24px">{{i[0]}} on {{i[1]}}</button>-->
+          </div>
+        {% endfor %}
+      </form>
     </div>
   </div>
 
@@ -98,11 +111,10 @@
             </div>
             <!--Modal Body-->
             <div class="modal-body">
-              <p>Collaborator: <input type="text" placeholder="Search.."></p>
-                 <p>Date: <input type="text" id="datepicker" autocomplete="off"></p>
-                <div>
-                  <p>Event Name: <input type="text" Placeholder="Event Description" required></p>
-                </div>
+              <p>Event Name: <input type="text" name="" value="" required></p>
+              <p>Collaborator: <input type="text" autocomplete="off" name="" value="" required></p>
+              <p>Event Date: <input type="text" id="datepicker" autocomplete="off" name="date" value="" required></p>
+
                 <hr>
                 <p>Upload a Receipt:</p>
                 <input type="file" name="fileToUpload" id="fileToUpload">
@@ -118,6 +130,40 @@
       </div>
     </div>
   </div>
+
+
+
+  <!--Event History Modal-->
+  <div class="container">
+    <div class="row">
+      <div id="id04" class="modal w3-animate-opacity" role="dialog">
+        <div class="modal-dialog ">
+          <form class="modal-content" action="/action_page.php">
+            <!--Modal Header-->
+            <div class="modal-header">
+              <h4 class="modal-title"><p>Event: <input type="text" name="" readonly></p></h4>
+              <button type="button"  onclick="document.getElementById('id04').style.display='none'" class="cancel" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!--Modal Body-->
+            <div class="modal-body">
+              <p>Event Date: <input type="text" name="" readonly></p></p>
+              <p>Collaborator: <input type="text" name="" readonly></p></p>
+            </div>
+            <!--Modal Footer-->
+            <div class="modal-footer">
+              <p>Total: <input type="text" name="" readonly></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
 
   <footer>
     <div class="bottom-tray">

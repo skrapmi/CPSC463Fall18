@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="stylesheets/styles.css">
+  <link rel="stylesheet" href="../static/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
@@ -24,16 +24,15 @@
 
 
 
-  <title>Home</title>
+  <title>{{msg[1]}}</title>
 
 </head>
 
 <body>
-
   <header>
     <div class="top-tray">
       <input type="text" name="" class="log-out-button" value="Log Out" onclick="document.getElementById('').style.display='block'" style="width:auto;">
-      <input type="text" class="logo" value="*Placeholder*">
+      <input type="text" class="logo" value="Items Page">
     </div>
   </header>
 
@@ -47,32 +46,32 @@
             <ul class="list">
                   <li data-id="1">
                     <div class="friend">
-                    <p><img class="friend-icon" src="images/cpt_america.png"/><a href="#" class="friend-name">Johnny</a></p>
+                      <p><img class="friend-icon" src="{{ url_for('static', filename='cpt_america.png') }}"/><a href="#" class="friend-name">Johnny</a></p>
                     </div>
                   </li>
                   <li data-id="2">
                     <div class="friend">
-                    <p><img class="friend-icon" src="images/ironman.png"/><a href="#" class="friend-name">Sandra</a></p>
+                      <p><img class="friend-icon" src="{{ url_for('static', filename='ironman.png') }}"/><a href="#" class="friend-name">Sandra</a></p>
                     </div>
                   </li>
                   <li data-id="3">
                     <div class="friend">
-                    <p><img class="friend-icon" src="images/thor.png"/><a href="#" class="friend-name">Ralph</a></p>
+                      <p><img class="friend-icon" src="{{ url_for('static', filename='thor.png') }}"/><a href="#" class="friend-name">Ralph</a></p>
                     </div>
                   </li>
                   <li data-id="4">
                     <div class="friend">
-                    <p><img class="friend-icon" src="images/iron-man-2507706_1280.png"/><a href="#" class="friend-name">Andrew</a></p>
+                      <p><img class="friend-icon" src="{{ url_for('static', filename='iron-man-2507706_1280.png') }}"/><a href="#" class="friend-name">Andrew</a></p>
                     </div>
                   </li>
                   <li data-id="5">
                     <div class="friend">
-                    <p><img class="friend-icon" src="images/captain-marvel-2977923_1280.jpg"/><a href="#" class="friend-name">Sasha</a></p>
+                      <p><img class="friend-icon" src="{{ url_for('static', filename='captain-marvel-2977923_1280.jpg') }}"/><a href="#" class="friend-name">Sasha</a></p>
                     </div>
                   </li>
                   <li data-id="6">
                     <div class="friend">
-                    <p><img class="friend-icon" src="images/spiderman-3309033_1280.jpg"/><a href="#" class="friend-name">Peter</a></p>
+                      <p><img class="friend-icon" src="{{ url_for('static', filename='spiderman-3309033_1280.jpg') }}"/><a href="#" class="friend-name">Peter</a></p>
                     </div>
                   </li>
             </ul>
@@ -83,21 +82,18 @@
 
     <div class="column">
       <div class="panel-title text-center">
-        <p>Events<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
+        <p>Add New Item<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
       </div>
-      <div class="col-sm-offset-4" style="font-size: 26px">
-        <label for="date">Date:</label>
-        <input type="date" n1me="" value="">
-      </div>
-      <div class="col-sm-offset-3">
-        <button type="button" name="button" class="block" style="font-size:24px">Event 1    <span class="fa fa-money" style="font-size:26px" style="cursor:pointer" onclick="document.getElementById('id04').style.display='block'"></span></button>
-      </div>
-      <div class="col-sm-offset-3">
-        <button type="button" name="button" class="block" style="font-size:24px">Event 2    <span class="fa fa-money" style="font-size:26px" style="cursor:pointer" onclick="document.getElementById('id04').style.display='block'"></span></button>
-      </div>
-      <div class="col-sm-offset-3">
-        <button type="button" name="button" class="block" style="font-size:24px">Event 3    <span class="fa fa-money" style="font-size:26px" style="cursor:pointer" onclick="document.getElementById('id04').style.display='block'"></span></button>
-      </div>
+      <form methon="POST">
+        <div class="col-sm-offset-3">
+          <label for="Item" style="font-size:32px">{{msg[1]}} Event</label>  
+        </div>
+        {% for i in msg2 %}
+          <div class="col-sm-offset-3">
+            <button type="submit" name="button" class="block" style="font-size:24px">{{i[1]}} {{i[3]}} {{i[4]}} </button>
+          </div>
+        {% endfor %}
+      </form>
     </div>
   </div>
 
@@ -111,16 +107,16 @@
     <div class="row">
       <div id="id03" class="modal w3-animate-opacity" role="dialog">
         <div class="modal-dialog ">
-          <form class="modal-content" action="/action_page.php">
+          <form class="modal-content" action="/add/">
             <!--Modal Header-->
             <div class="modal-header">
               <h4 class="modal-title">Create A New Event</h4>
             </div>
             <!--Modal Body-->
             <div class="modal-body">
-              <p>Event Name: <input type="text" name="" value="" required></p>
+              <p>Item Name: <input type="text" name="" value="" required></p>
               <p>Collaborator: <input type="text" autocomplete="off" name="" value="" required></p>
-              <p>Event Date: <input type="text" id="datepicker" autocomplete="off" name="date" value="" required></p>
+              <!--<p>Event Date: <input type="text" id="datepicker" autocomplete="off" name="date" value="" required></p>-->
 
                 <hr>
                 <p>Upload a Receipt:</p>

@@ -12,6 +12,9 @@ app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 app.secret_key = 'development key'
 
+# Global Scope
+userdb = None
+
 class ContactForm(Form):
     name = TextField("Test Name")
 
@@ -22,35 +25,33 @@ def open_db(name):
     print "Openned database %s as %r" % (name, conn)
     return conn
 
-
 def copyTable(src, dest, db):
     #selection = src.execute('SELECT * FROM %s' % table)
     src.execute("ATTACH DATABASE '%s' AS destin" % dest)
     src.execute("INSERT INTO destin.user SELECT * FROM main.user;")
     db.commit()
 
-
-def updateCount(userlist):
-    count = 0
-    for i in userlist:
-        count += 1
-        print(count)
-    return count
-
 def createUser(na,pw):
-    log = open_db('login.db')
-    users = log.execute("SELECT * FROM userlogin")
-    usercount = 0
-    cur = log.cursor()
-    usercount = updateCount(users)
+    global userdb
+    logindb = open_db('login.db')
+    users = logindb.execute("SELECT * FROM userlogin")
+    usercount = int(logindb.execute('''SELECT COUNT(*) FROM userlogin''').fetchone()[0])
+    cur = logindb.cursor()
+
+    for i in range (usercount):
+        if na == str(logindb.execute('''SELECT username FROM userlogin WHERE username=(?)''', [na]).fetchone()[i]):
+            return
+        
     usercount += 1
     # Create a new userX.db that copies from the base
     nuser = open_db('user' + str(usercount) + '.db')
+    userdb = nuser
+
     nuser.execute('''CREATE TABLE "eventlist" (
-        `eventlist_id` INTEGER NOT NULL, 
+        `eventlist_id` INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, 
         `events_id` INTEGER NOT NULL, 
         `eventname` TEXT NOT NULL, 
-        `date` DATE NOT NULL, PRIMARY KEY(`eventlist_id`) 
+        `date` DATE NOT NULL 
         )
         ''')
     nuser.execute('''CREATE TABLE "events" (
@@ -95,75 +96,73 @@ def createUser(na,pw):
     primaryuser_id INTEGER NOT NULL DEFAULT 0
     )
     ''')
+
     ndbname = ('user' + str(usercount) + '.db')
     # Find the highest userID
     cur.execute('''SELECT user_id from userlogin ORDER BY user_id DESC LIMIT 1''')
     # increment it by 1 and use it as the userID for the new user
     newid = int(cur.fetchone()[0]) + 1
     cur.execute('''INSERT INTO userlogin(user_id, username, password, userdbfilename) VALUES(?, ?, ?, ?);''', (newid, na, pw, ndbname))
-    log.commit()
-    log.close()
+    logindb.commit()
+    logindb.close()
     print("New user created")
 
 def userOwes(name):
-    log = open_db('login.db')
-    cur = log.cursor()
-    db = str(cur.execute('''SELECT userdbfilename FROM userlogin WHERE username=(?)''', [name]).fetchone()[0])
-    usdb = open_db(db)
+    global userdb
+    usdb = open_db(userdb)
     uscur = usdb.cursor()
-    count = int(uscur.execute('''SELECT COUNT(*) FROM items''').fetchone()[0])
-    results = ""
+
+    count = int(uscur.execute('''SELECT COUNT(*) FROM eventlist''').fetchone()[0])
+    results = []
+    temp = ()
     for i in range (0, count):
-        results += str(uscur.execute('''SELECT * FROM items''').fetchall()[i][1])
-        results += ", $"
-        results += str(uscur.execute('''SELECT * FROM items''').fetchall()[i][3])
-        results += ", owed to "
-        owedid = str(uscur.execute('''SELECT * FROM items''').fetchall()[i][4])
-        owed = str(cur.execute('''SELECT username FROM userlogin WHERE user_id=(?)''', [owedid]).fetchone()[0])
-        results += owed
-        results += "  |  "
+        temp = (str(uscur.execute('''SELECT * FROM eventlist''').fetchall()[i][2]), str(uscur.execute('''SELECT * FROM eventlist''').fetchall()[i][3]),str(uscur.execute('''SELECT * FROM eventlist''').fetchall()[i][1]))
+        results.append(temp)
     usdb.close()
-    log.close()
-    print (results)
-    return render_template("result.html", msg = results)
+    return render_template("home.html", msg = results, count = count)
     
 def validateUser(na, pw):
-    match = False
+    global userdb
+    dbuser = None
     dbpass = None
-    log = open_db('login.db')
-    cur = log.cursor()
-    if (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [na]).fetchall()) != "[]"):
-        dbuser = (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [na]).fetchone()[0]))
-        dbpass = (str(cur.execute('''SELECT password FROM userlogin WHERE username=(?)''', [na]).fetchone()[0]))
-    if(pw == dbpass):
-        match = True
-    if match == True:
-        return userOwes(na)
-    log.close()
-    print(match)
-    return render_template('result.html')
+    logindb = open_db('login.db')
+    uscur = logindb.cursor()
+    count = int(uscur.execute('''SELECT COUNT(*) FROM userlogin''').fetchone()[0])
+    for i in range ( 0, count):
+        if na == str(uscur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [na]).fetchone()[i]):
+            dbpass = (str(uscur.execute('''SELECT password FROM userlogin WHERE username=(?)''', [na]).fetchone()[i]))
+            if(pw == dbpass): 
+                userdb = (str(uscur.execute('''SELECT userdbfilename FROM userlogin WHERE username=(?)''', [na]).fetchone()[i]))
+                return userOwes(na)
+    logindb.close()
+    print("no match")
+    return render_template('index.html')
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     user = request.args.get('username')
     userpass = request.args.get('password')
     if (user != None) and (userpass != None):
-        validateUser(user,userpass)
         return (validateUser(user, userpass))
     form = ContactForm()
     return render_template('index.html', form = form)
 
+@app.route('/home', methods=['GET' , 'POST'])
+def eventlist():
+    event_id = request.args.get('button')
+
 # endpoint to show all users
 @app.route("/users", methods=["GET"])
 def get_users():
-    log = open_db('login.db')
-    cur = log.cursor()
+    global userdb
+    logindb = open_db('login.db')
+    cur = logindb.cursor()
     users = ""
     usercount = int(cur.execute('''SELECT count(*) FROM userlogin''').fetchone()[0])
     for i in range(0, usercount):
         users += (str(cur.execute("SELECT * FROM userlogin").fetchall()[i][1]))
         users += '   '
-    log.close()
+    logindb.close()
     return render_template('result.html', msg = str(users))
 
 
@@ -184,14 +183,60 @@ def next_page():
         return (validateUser(user, userpass))
     return render_template('index.html', form = form)
 
+@app.route('/eventitems/', methods=['GET', 'POST'])
+def display_items():
+    global userdb
+    logindb = open_db('login.db')
+    cur = logindb.cursor()
+    event_num = 0
+    usdb = open_db(userdb)
+    uscur = usdb.cursor()
+    count = int(uscur.execute('''SELECT COUNT(*) FROM eventlist''').fetchone()[0])
+    if request.method == 'POST':
+        for i in range (count):
+            if (request.form['button'].decode('utf-8')).split(' on ')[0] == (str(uscur.execute('''SELECT * FROM eventlist''').fetchall()[i][2])):
+                event_num = (str(uscur.execute('''SELECT * FROM eventlist''').fetchall()[i][1]))
+    count = int(uscur.execute('''SELECT COUNT(*) FROM events''').fetchone()[0])
+    results = []
+    temp = []
+    associate_event = []
+    for i in range (count):
+        if event_num == str(uscur.execute('''SELECT * FROM events''').fetchall()[i][0]):
+            temp = [str(uscur.execute('''SELECT * FROM events''').fetchall()[i][0]), \
+                    str(uscur.execute('''SELECT * FROM events''').fetchall()[i][1]), \
+                    str(uscur.execute('''SELECT * FROM events''').fetchall()[i][2])]
+            associate_event.append(int(temp[0]))
+            assoc_count = int(uscur.execute('''SELECT COUNT(*) FROM eventsuserlist''').fetchone()[0])
+            for j in range (assoc_count):
+                if associate_event[0] == int(uscur.execute('''SELECT * FROM eventsuserlist''').fetchall()[j][2]):
+                    associate_event.append(int(uscur.execute('''SELECT * FROM eventsuserlist''').fetchall()[j][1]))
+                    print(associate_event)
+            itemcount = int(uscur.execute('''SELECT COUNT(*) FROM events''').fetchone()[0])
+            for i in range (itemcount):
+                subitemcount = int(cur.execute('''SELECT COUNT(*) FROM userlogin''').fetchone()[0])
+                for k in range (subitemcount):
+                    print(associate_event[1])
+                    print(int(uscur.execute('''SELECT * FROM items''').fetchall()[i][0]))
+                    if str(cur.execute('''SELECT * FROM userlogin''').fetchall()[k][0]) == str(uscur.execute('''SELECT * FROM items''').fetchall()[i][4]) and \
+                        associate_event[1] == int(uscur.execute('''SELECT * FROM items''').fetchall()[i][0]):
+                        temp2 = (str(uscur.execute('''SELECT * FROM items''').fetchall()[i][0]), \
+                                str(uscur.execute('''SELECT * FROM items''').fetchall()[i][1]), \
+                                str(uscur.execute('''SELECT * FROM items''').fetchall()[i][2]), \
+                                str(uscur.execute('''SELECT * FROM items''').fetchall()[i][3]), \
+                                str(cur.execute('''SELECT * FROM userlogin''').fetchall()[k][1]))
+                        break
+                results.append(temp2)
+    usdb.close()
+    return render_template("event.html", msg2 = results, msg = temp)
+
 @app.route('/add/', methods =['POST'])
 def add_item():
     user = request.form['user']
     item = request.form['item']
     price = request.form['price']
     owed = request.form['owed']
-    log = open_db('login.db')
-    cur = log.cursor()
+    logindb = open_db('login.db')
+    cur = logindb.cursor()
     if (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [user]).fetchall()) != "[]") and (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [owed]).fetchall()) != "[]"):
         owedid = int(cur.execute('''SELECT user_id FROM userlogin WHERE username=(?)''', [owed]).fetchone()[0])
         db = str(cur.execute('''SELECT userdbfilename FROM userlogin WHERE username=(?)''', [user]).fetchone()[0])
@@ -209,8 +254,8 @@ def add_item():
 def remove_item():
     user = request.form['user']
     item = request.form['item']
-    log = open_db('login.db')
-    cur = log.cursor()
+    logindb = open_db('login.db')
+    cur = logindb.cursor()
     if (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [user]).fetchall()) != "[]"):
         db = str(cur.execute('''SELECT userdbfilename FROM userlogin WHERE username=(?)''', [user]).fetchone()[0])
         usdb = open_db(db)
