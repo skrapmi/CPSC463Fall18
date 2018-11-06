@@ -40,8 +40,7 @@ def open_db(name):
 
 # returns the size of table
 def getTableSize(db, tablename):
-    print('----------------- getTableSize--------')
-    return int(db.execute("SELECT COUNT(*) FROM " + tablename).fetchone()[0])
+    return (db.execute("SELECT COUNT(*) FROM " + tablename).fetchall())[0][0]
 
 # Creates User login file if not exists
 def createUser(na,pw,first,last,email):
@@ -122,9 +121,10 @@ def validateUser(na, pw):
     #dbpass = None
     logindb , cur = open_db(logindbfile)
     count = getTableSize(cur, 'userlogin')
-    for i in range ( 0, count):
+    for i in range (count):
+        #print('&&&&&&&&&&&&&&&&&&&&&&& '+ str(count))
         if str(na) == str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', (na,)).fetchone()[i]):
-            print(type(str(na)), ' ', type(str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', (na,)).fetchone()[i])))
+            #print(type(str(na)), ' ', type(str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', (na,)).fetchone()[i])))
             if(str(pw) == str(cur.execute('''SELECT password FROM userlogin WHERE username=(?)''', (na,)).fetchone()[i])): 
                 userdb = (str(cur.execute('''SELECT userdbfilename FROM userlogin WHERE username=(?)''', (na,)).fetchone()[i]))
                 return userOwes(na)
@@ -173,15 +173,15 @@ def next_page():
         return (validateUser(nuser, npass))
     return render_template('index.html', form = form)
 
-@app.route('/addevent/', methods =['POST'])
+@app.route('/addevent/', methods =['GET','POST'])
 def add_event():
     print('----------------- add_event--------')
     global userdb
     user_db , user_cur = open_db(userdb)
-    event = request.form['event']
-    location = request.form['location']
-    date = request.form['date']
-    
+    event = str(request.args.get('event'))
+    location = str(request.args.get('location'))
+    date = str(request.args.get('date'))
+    print(event, location, date,'*******************')
     
     # if (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [user]).fetchall()) != "[]") and (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [owed]).fetchall()) != "[]"):
     #     owedid = int(cur.execute('''SELECT user_id FROM userlogin WHERE username=(?)''', [owed]).fetchone()[0])
@@ -195,10 +195,11 @@ def add_event():
     #     usdb.close()
     #     return render_template('result.html', msg = ("Event %s added to %s owing %s dollars to %s" % (item, user, price, owed)))
     # return ("One or more users in this addition was not found")
-
     user_cur.execute('INSERT INTO eventlist(eventname, location, date) VALUES(?,?,?)', (event, location, date))
-    display_items()
-    return ("Event Addied")
+    print('Event Added')
+    user_db.commit()
+    user_db.close()
+    return display_items()
     
 
 
@@ -225,7 +226,7 @@ def add_item():
         db = str(cur.execute('''SELECT userdbfilename FROM userlogin WHERE username=(?)''', [user]).fetchone()[0])
         usdb, uscur = open_db(db)
         user_db, user_cur = open_db(userdb)
-        itemcount = getTableSize(uscur, 'items')
+        itemcount = getTableSize(uscur, 'eventitems')
         itemcount += 1
         uscur.execute('''INSERT INTO items(item_id, description, quantity, price, linkeduser_id) VALUES(?,?,?,?,?)''', (itemcount, item, 1, price, owedid))
         usdb.commit()
@@ -270,35 +271,35 @@ def display_items():
         for i in range (count):
             if (request.form['button'].decode('utf-8')).split(' on ')[0] == (str(user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][2])):
                 event_num = user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][1]
-    count = getTableSize(user_cur, 'events')
+    count = getTableSize(user_cur, 'eventlist')
     results = []
     associate_event = []
     for i in range (count):
-        if event_num == user_cur.execute('''SELECT * FROM events''').fetchall()[i][0]:
+        if event_num == user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][0]:
             #associate_event.append(user_cur.execute('''SELECT * FROM events''').fetchall()[i])
             assoc_count = getTableSize(user_cur, 'eventsuserlist')
             for j in range (assoc_count):
                 if event_num == user_cur.execute('''SELECT * FROM eventsuserlist''').fetchall()[j][2]:
                     associate_event.append(user_cur.execute('''SELECT * FROM eventsuserlist''').fetchall()[j][1])
                     print(associate_event)
-            itemcount = getTableSize(user_cur, 'events')
+            itemcount = getTableSize(user_cur, 'eventlist')
             for i in range (itemcount):
                 subitemcount = getTableSize(cur, 'userlogin')
                 for k in range (subitemcount):
                     print(associate_event[1])
-                    print(int(user_cur.execute('''SELECT * FROM items''').fetchall()[i][0]))
+                    print(int(user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][0]))
                     if str(cur.execute('''SELECT * FROM userlogin''').fetchall()[k][0]) == str(user_cur.execute('''SELECT * FROM items''').fetchall()[i][4]) and \
                         associate_event[1] == int(user_cur.execute('''SELECT * FROM items''').fetchall()[i][0]):
-                        temp2 = (str(user_cur.execute('''SELECT * FROM items''').fetchall()[i][0]), \
-                                str(user_cur.execute('''SELECT * FROM items''').fetchall()[i][1]), \
-                                str(user_cur.execute('''SELECT * FROM items''').fetchall()[i][2]), \
-                                str(user_cur.execute('''SELECT * FROM items''').fetchall()[i][3]), \
+                        temp2 = (str(user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][0]), \
+                                str(user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][1]), \
+                                str(user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][2]), \
+                                str(user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][3]), \
                                 str(cur.execute('''SELECT * FROM userlogin''').fetchall()[k][1]))
                         break
                 results.append(temp2)
     user_db.close()
     logindb.close()
-    return render_template("event.html", msg2 = results, msg = associate_event)
+    return render_template("home.html", msg2 = results, msg = associate_event)
 
 
 @app.route('/remove/', methods =['POST'])
@@ -355,7 +356,7 @@ def get_users():
     print('*************************************** get users *****************************************')
     global userdb, logindbfile
     logindb, cur = open_db(logindbfile)
-    users = ()
+    users = []
     usercount = getTableSize(cur, 'userlogin')
     for i in range(0, usercount):
         users.append(str(cur.execute("SELECT * FROM userlogin").fetchall()[i][1]))
