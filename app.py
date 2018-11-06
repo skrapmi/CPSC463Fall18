@@ -40,7 +40,7 @@ def open_db(name):
 
 # returns the size of table
 def getTableSize(db, tablename):
-    print('*************************************** print table ***************************************')
+    print('----------------- getTableSize--------')
     return int(db.execute("SELECT COUNT(*) FROM " + tablename).fetchone()[0])
 
 # Creates User login file if not exists
@@ -133,7 +133,7 @@ def validateUser(na, pw):
     return render_template('index.html')
 
 def userOwes(name):
-    print('*************************************************** user owes *************************************')
+    print('----------------- user owes--------')
     global userdb
     user_db, user_cur = open_db(userdb)
     count = getTableSize(user_cur, 'eventlist')
@@ -163,7 +163,7 @@ def next_page():
     if(nuser != None):
         count = getTableSize(cur, 'userlogin')
         for i in range ( 0, count):
-            if str(nuser) == str(cur.execute('''SELECT username FROM userlogin''').fetchone()[i]):
+            if str(nuser) == str(cur.execute('''SELECT username FROM userlogin''').fetchone())[i]:
                 print('Username not available')
                 return  render_template('index.html', form = form) ############## Where do  we return to ?
         if(npass == npsrep):
@@ -175,6 +175,7 @@ def next_page():
 
 @app.route('/addevent/', methods =['POST'])
 def add_event():
+    print('----------------- add_event--------')
     global userdb
     user_db , user_cur = open_db(userdb)
     event = request.form['event']
@@ -211,6 +212,7 @@ def add_event():
 
 @app.route('/add/', methods =['POST'])
 def add_item():
+    print('----------------- add_item--------')
     global userdb, logindbfile
     user = request.form['user']
     item = request.form['item']
@@ -258,6 +260,7 @@ def add_item():
 
 @app.route('/eventitems/', methods=['GET', 'POST'])
 def display_items():
+    print('----------------- display_items--------')
     global userdb, logindbfile
     logindb, cur = open_db(logindbfile)
     user_db, user_cur = open_db(userdb)
@@ -300,6 +303,7 @@ def display_items():
 
 @app.route('/remove/', methods =['POST'])
 def remove_item():
+    print('----------------- romove_itmes--------')
     user = request.form['user']
     item = request.form['item']
     logindb, cur = open_db(logindbfile)
@@ -317,11 +321,13 @@ def remove_item():
 
 @app.route('/additem.html', methods =['GET', 'POST'])
 def add_page():
+    print('----------------- add_page--------')
     form = ContactForm()
     return render_template('additem.html', form = form)
 
 @app.route('/removeitem.html', methods =['GET', 'POST'])
 def remove_page():
+    print('----------------- remove_page--------')
     form = ContactForm()
     return render_template('removeitem.html', form = form)
 
