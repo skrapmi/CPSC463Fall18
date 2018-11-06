@@ -82,15 +82,15 @@
 
     <div class="column">
       <div class="panel-title text-center">
-        <p>Add New Item<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
+        <p>Add New Item<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id06').style.display='block'"></span></p>
       </div>
       <form methon="POST">
         <div class="col-sm-offset-3">
-          <label for="Item" style="font-size:32px">{{msg[1]}} Event</label>  
+          <label for="Item" style="font-size:32px">{{msg[1]}} Event at {{msg[2]}}</label>  
         </div>
         {% for i in msg2 %}
           <div class="col-sm-offset-3">
-            <button type="submit" name="button" class="block" style="font-size:24px">{{i[1]}} {{i[3]}} {{i[4]}} </button>
+            <button type="submit" name="button" class="block" style="font-size:24px">{{i[2]}} for {{i[6]}} which was {{i[4]}} </button>
           </div>
         {% endfor %}
       </form>
@@ -101,63 +101,39 @@
 
 
 
-
-  <!--Event Modal-->
+<!--Sign up modal-->
   <div class="container">
     <div class="row">
-      <div id="id03" class="modal w3-animate-opacity" role="dialog">
+      <div id="id06" class="modal w3-animate-opacity" role="dialog">
         <div class="modal-dialog ">
-          <form class="modal-content" action="/add/">
-            <!--Modal Header-->
+          <form class="modal-content" action="/additem/">
             <div class="modal-header">
-              <h4 class="modal-title">Create A New Event</h4>
+              <h4 class="modal-title">Add a new item to {{msg[2]}}</h4>
             </div>
-            <!--Modal Body-->
             <div class="modal-body">
-              <p>Item Name: <input type="text" name="" value="" required></p>
-              <p>Collaborator: <input type="text" autocomplete="off" name="" value="" required></p>
-              <!--<p>Event Date: <input type="text" id="datepicker" autocomplete="off" name="date" value="" required></p>-->
+              <p>Please fill in this form to add an Item.</p>
 
-                <hr>
-                <p>Upload a Receipt:</p>
-                <input type="file" name="fileToUpload" id="fileToUpload">
-                <input type="submit" value="Upload Image" name="submit">
-            </div>
-            <!--Modal Footer-->
-            <div class="modal-footer">
-              <button type="submit" class="signup"><i class="fa fa-check-square-o"></i>Submit</button>
-              <button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn"><i class="fa fa-times-rectangle-o"></i> Cancel</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+              <hr>
 
+              <label class="col-sm-3" for="itemname"><b>Item Name: </b></label>
+              <input class="col-sm-6" type="text" placeholder="Enter Item Name" name="itemname" value="" required>
+              <div class="clearfix"></div>
+              <br>
 
+              <label class="col-sm-3" for="itemquantity"><b>Item Quantity:</b></label>
+              <input class="col-sm-6" type="text" placeholder="Enter Quantity" name="itemquantity" value="" required>
+              <div class="clearfix"></div>
 
-  <!--Event History Modal-->
-  <div class="container">
-    <div class="row">
-      <div id="id04" class="modal w3-animate-opacity" role="dialog">
-        <div class="modal-dialog ">
-          <form class="modal-content" action="/action_page.php">
-            <!--Modal Header-->
-            <div class="modal-header">
-              <h4 class="modal-title"><p>Event: <input type="text" name="" readonly></p></h4>
-              <button type="button"  onclick="document.getElementById('id04').style.display='none'" class="cancel" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+              <label class="col-sm-3" for="price"><b>Item Price:</b></label>
+              <input class="col-sm-6" type="text" placeholder="Item Price" name="price" value="" required>
+              <div class="clearfix"></div>
+              <br>
+
             </div>
-            <!--Modal Body-->
-            <div class="modal-body">
-              <p>Event Date: <input type="text" name="" readonly></p></p>
-              <p>Collaborator: <input type="text" name="" readonly></p></p>
-            </div>
-            <!--Modal Footer-->
-            <div class="modal-footer">
-              <p>Total: <input type="text" name="" readonly></p>
-            </div>
+              <div class="modal-footer">
+                <button type="submit" class="signup" name=submit value={{msg[1]}}><i class="fa fa-check-square-o"></i>Add Item</button>
+                <button type="button" onclick="document.getElementById('id06').style.display='none'" class="cancelbtn"><i class="fa fa-times-rectangle-o"></i> Cancel</button>
+              </div>
           </form>
         </div>
       </div>
