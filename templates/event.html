@@ -101,63 +101,40 @@
 
 
 
-
-  <!--Event Modal-->
+<!--Sign up modal-->
   <div class="container">
     <div class="row">
-      <div id="id03" class="modal w3-animate-opacity" role="dialog">
+      <div id="id02" class="modal w3-animate-opacity" role="dialog">
         <div class="modal-dialog ">
-          <form class="modal-content" action="/add/">
-            <!--Modal Header-->
+          <form class="modal-content" action="/addevent/">
             <div class="modal-header">
-              <h4 class="modal-title">Create A New Event</h4>
+              <h4 class="modal-title">Create A New Event
+          </h4>
             </div>
-            <!--Modal Body-->
             <div class="modal-body">
-              <p>Item Name: <input type="text" name="" value="" required></p>
-              <p>Collaborator: <input type="text" autocomplete="off" name="" value="" required></p>
-              <!--<p>Event Date: <input type="text" id="datepicker" autocomplete="off" name="date" value="" required></p>-->
+              <p>Please fill in this form to create an event.</p>
 
-                <hr>
-                <p>Upload a Receipt:</p>
-                <input type="file" name="fileToUpload" id="fileToUpload">
-                <input type="submit" value="Upload Image" name="submit">
-            </div>
-            <!--Modal Footer-->
-            <div class="modal-footer">
-              <button type="submit" class="signup"><i class="fa fa-check-square-o"></i>Submit</button>
-              <button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn"><i class="fa fa-times-rectangle-o"></i> Cancel</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+              <hr>
 
+              <label class="col-sm-3" for="event"><b>Event Name: </b></label>
+              <input class="col-sm-6" type="text" placeholder="Enter Event Name" name="event" required>
+              <div class="clearfix"></div>
+              <br>
 
+              <label class="col-sm-3" for="location"><b>Enter Location:</b></label>
+              <input class="col-sm-6" type="text" placeholder="Location" name="location" required>
+              <div class="clearfix"></div>
 
-  <!--Event History Modal-->
-  <div class="container">
-    <div class="row">
-      <div id="id04" class="modal w3-animate-opacity" role="dialog">
-        <div class="modal-dialog ">
-          <form class="modal-content" action="/action_page.php">
-            <!--Modal Header-->
-            <div class="modal-header">
-              <h4 class="modal-title"><p>Event: <input type="text" name="" readonly></p></h4>
-              <button type="button"  onclick="document.getElementById('id04').style.display='none'" class="cancel" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+              <label class="col-sm-3" for="date"><b>Event Date:</b></label>
+              <input class="col-sm-6" type="date" placeholder="mm/dd/yyyy" name="date" required>
+              <div class="clearfix"></div>
+              <br>
+
             </div>
-            <!--Modal Body-->
-            <div class="modal-body">
-              <p>Event Date: <input type="text" name="" readonly></p></p>
-              <p>Collaborator: <input type="text" name="" readonly></p></p>
-            </div>
-            <!--Modal Footer-->
-            <div class="modal-footer">
-              <p>Total: <input type="text" name="" readonly></p>
-            </div>
+              <div class="modal-footer">
+                <button type="submit" class="signup"><i class="fa fa-check-square-o"></i>  Sign Up</button>
+                <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn"><i class="fa fa-times-rectangle-o"></i> Cancel</button>
+              </div>
           </form>
         </div>
       </div>
