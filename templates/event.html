@@ -86,7 +86,7 @@
       </div>
       <form methon="POST">
         <div class="col-sm-offset-3">
-          <label for="Item" style="font-size:32px">{{msg[1]}} Event</label>  
+          <label for="Item" style="font-size:32px">{{msg[1]}} Event at {{msg[2]}}</label>  
         </div>
         {% for i in msg2 %}
           <div class="col-sm-offset-3">
@@ -106,34 +106,33 @@
     <div class="row">
       <div id="id06" class="modal w3-animate-opacity" role="dialog">
         <div class="modal-dialog ">
-          <form class="modal-content" action="/addevent/">
+          <form class="modal-content" action="/additem/">
             <div class="modal-header">
-              <h4 class="modal-title">Create A New Event
-          </h4>
+              <h4 class="modal-title">Add a new item to {{msg[2]}}</h4>
             </div>
             <div class="modal-body">
-              <p>Please fill in this form to create an event.</p>
+              <p>Please fill in this form to add an Item.</p>
 
               <hr>
 
-              <label class="col-sm-3" for="event"><b>Event Name: </b></label>
-              <input class="col-sm-6" type="text" placeholder="Enter Event Name" name="event" required>
+              <label class="col-sm-3" for="itemname"><b>Item Name: </b></label>
+              <input class="col-sm-6" type="text" placeholder="Enter Item Name" name="itemname" required>
               <div class="clearfix"></div>
               <br>
 
-              <label class="col-sm-3" for="location"><b>Enter Location:</b></label>
-              <input class="col-sm-6" type="text" placeholder="Location" name="location" required>
+              <label class="col-sm-3" for="itemquantity"><b>Item Quantity:</b></label>
+              <input class="col-sm-6" type="text" placeholder="Enter Quantity" name="itemquantity" required>
               <div class="clearfix"></div>
 
-              <label class="col-sm-3" for="date"><b>Event Date:</b></label>
-              <input class="col-sm-6" type="date" placeholder="mm/dd/yyyy" name="date" required>
+              <label class="col-sm-3" for="price"><b>Item Price:</b></label>
+              <input class="col-sm-6" type="text" placeholder="Item Price" name="price" required>
               <div class="clearfix"></div>
               <br>
 
             </div>
               <div class="modal-footer">
                 <button type="submit" class="signup"><i class="fa fa-check-square-o"></i>  Sign Up</button>
-                <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn"><i class="fa fa-times-rectangle-o"></i> Cancel</button>
+                <button type="button" onclick="document.getElementById('id06').style.display='none'" class="cancelbtn"><i class="fa fa-times-rectangle-o"></i> Cancel</button>
               </div>
           </form>
         </div>
