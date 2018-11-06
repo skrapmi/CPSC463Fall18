@@ -90,7 +90,7 @@
         </div>
         {% for i in msg2 %}
           <div class="col-sm-offset-3">
-            <button type="submit" name="button" class="block" style="font-size:24px">{{i[1]}} {{i[3]}} {{i[4]}} </button>
+            <button type="submit" name="button" class="block" style="font-size:24px">{{i[2]}} for {{i[6]}} which was {{i[4]}} </button>
           </div>
         {% endfor %}
       </form>
@@ -116,22 +116,22 @@
               <hr>
 
               <label class="col-sm-3" for="itemname"><b>Item Name: </b></label>
-              <input class="col-sm-6" type="text" placeholder="Enter Item Name" name="itemname" required>
+              <input class="col-sm-6" type="text" placeholder="Enter Item Name" name="itemname" value="" required>
               <div class="clearfix"></div>
               <br>
 
               <label class="col-sm-3" for="itemquantity"><b>Item Quantity:</b></label>
-              <input class="col-sm-6" type="text" placeholder="Enter Quantity" name="itemquantity" required>
+              <input class="col-sm-6" type="text" placeholder="Enter Quantity" name="itemquantity" value="" required>
               <div class="clearfix"></div>
 
               <label class="col-sm-3" for="price"><b>Item Price:</b></label>
-              <input class="col-sm-6" type="text" placeholder="Item Price" name="price" required>
+              <input class="col-sm-6" type="text" placeholder="Item Price" name="price" value="" required>
               <div class="clearfix"></div>
               <br>
 
             </div>
               <div class="modal-footer">
-                <button type="submit" class="signup"><i class="fa fa-check-square-o"></i>  Sign Up</button>
+                <button type="submit" class="signup" name=submit value={{msg[1]}}><i class="fa fa-check-square-o"></i>Add Item</button>
                 <button type="button" onclick="document.getElementById('id06').style.display='none'" class="cancelbtn"><i class="fa fa-times-rectangle-o"></i> Cancel</button>
               </div>
           </form>

@@ -141,9 +141,6 @@ def userOwes(): #name):
     temp = ()
     for i in range (0, count):
         temp = user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i]
-        # temp = (str(user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][2]), \
-        #         str(user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][3]), \
-        #         str(user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][1]))
         results.append(temp)
     user_db.close()
     return render_template("home.html", msg = results, count = count)
@@ -168,7 +165,7 @@ def next_page():
                 return  render_template('index.html', form = form) ############## Where do  we return to ?
         if(npass == npsrep):
             createUser(nuser, npass, first, last , email)
-            return userOwes() #nuser)  #render_template('result.html', msg = ("User %s created" % nuser))
+            return userOwes()
     if(nuser != None):
         return (validateUser(nuser, npass))
     return render_template('index.html', form = form)
@@ -200,18 +197,25 @@ def display_items():
             if (request.form['button'].decode('utf-8')).split(' on ')[0] == (str(user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][1])):
                 event_num = user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][0]
                 event_loc = user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][2]
-    #count = getTableSize(user_cur, 'eventlist')
-    #results = []
-    # associate_event = entire recode of table with matching eventlist_id [eventlist_id, eventname, location, date, overallamount]
+    
     associate_event = user_cur.execute('SELECT * FROM eventlist WHERE eventlist_id=(?)', (event_num,)).fetchone()
+    display = ()
     displayitems = []
     event_item_count = getTableSize(user_cur, 'eventitems')
     for i in range (event_item_count):
         if event_num == user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][1]:
-            linkeduser = user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][4]
-            displayitems.append(user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][1], \
-                                cur.execute('SELECT username FROM userlogin WHERE user_id=(?)', (linkeduser)).fetchone())
-            print(displayitems)
+            linkeduser = user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][5]
+            
+            display = (user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][0], \
+                                user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][1], \
+                                str(user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][2]), \
+                                user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][3], \
+                                str('$'+ str(float("{0:.2f}".format(user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][4])))), \
+                                user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][5], \
+                                str(cur.execute('SELECT username FROM userlogin WHERE user_id=(?)', (linkeduser,)).fetchone()[0]))
+            print(display)
+
+            displayitems.append(display)
     user_db.close()
     logindb.close()
     return render_template("event.html", msg2 = displayitems, msg = associate_event)
@@ -222,56 +226,30 @@ def add_item():
     global userdb, logindbfile
     logindb, cur = open_db(logindbfile)
     user_db, user_cur = open_db(userdb)
-    #user = request.form['user']
-    item = request.form['itemname']
-    price = request.form['price']
-    quantity = request.form['itemquantity']
-    
-    
-    if (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [user]).fetchall()) != "[]") and (str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', [owed]).fetchall()) != "[]"):
-        owedid = int(cur.execute('''SELECT user_id FROM userlogin WHERE username=(?)''', [owed]).fetchone()[0])
-        db = str(cur.execute('''SELECT userdbfilename FROM userlogin WHERE username=(?)''', [user]).fetchone()[0])
-        usdb, uscur = open_db(db)
-        user_db, user_cur = open_db(userdb)
-        itemcount = getTableSize(uscur, 'eventitems')
-        itemcount += 1
-        uscur.execute('''INSERT INTO items(item_id, description, quantity, price, linkeduser_id) VALUES(?,?,?,?,?)''', (itemcount, item, 1, price, owedid))
-        usdb.commit()
-        usdb.close()
-        return render_template('result.html', msg = ("Event %s added to %s owing %s dollars to %s" % (item, user, price, owed)))
-    return ("One or more users in this addition was not found")
+    item = str(request.args.get('itemname'))
+    price = float("{0:.2f}".format(float(request.args.get('price'))))
+    quantity = int(request.args.get('itemquantity'))
+    eventname = str(request.args.get('submit'))
+    eventid = user_cur.execute('SELECT * FROM eventlist WHERE eventname=(?)', (eventname,)).fetchone()[0]
+    user_cur.execute('INSERT INTO eventitems(itemdescription, quantity, price, linkeduser_id,event_id) VALUES(?,?,?,?,?)', (item, quantity, price, 1, eventid))
+    new_overall_total = (price * quantity) + user_cur.execute('SELECT overallamount FROM eventlist WHERE eventlist_id=(?)', (eventid,)).fetchone()[0]
+    print(new_overall_total)
+    print(type(new_overall_total))
+    user_cur.execute('UPDATE eventlist set overallamount = ? WHERE eventname = ?', (new_overall_total,eventname))
+
+    print('Item Added')
+    user_db.commit()
+    user_db.close()
+    logindb.close()
+    return display_items()
 
 
 
+if __name__ == '__main__':
+    app.run()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Below are items I have not worked on!!!!!
 
 
 
@@ -305,8 +283,6 @@ def remove_page():
     form = ContactForm()
     return render_template('removeitem.html', form = form)
 
-if __name__ == '__main__':
-    app.run()
 
 
 
