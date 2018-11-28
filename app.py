@@ -188,17 +188,29 @@ def add_event():
     date = str(request.args.get('date'))
     user_cur.execute('INSERT OR IGNORE INTO eventlist(eventname, location, date) VALUES(?,?,?)', (event, location, date))
     user_db.commit()
+    user_db.close()
     msg = "Record successfully added"
     print('Event Added')
     return render_template("result.html", msg = msg)
-    user_db.close()
+   
+    
 
 
-@app.route("/forward/", methods=['POST'])
+@app.route("/forward/", methods=['GET'])
 def move_forward():
-    #Moving forward code
-    forward_message = "Moving Forward..."
-    return render_template('index.html', message=forward_message);
+    print('----------------- user owes--------')
+    global userdb
+    user_db, user_cur = open_db(userdb)
+    count = getTableSize(user_cur, 'eventlist')
+    results = []
+    temp = ()
+    for i in range (0, count):
+        temp = user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i]
+        results.append(temp)
+    user_db.commit()
+    user_db.close()
+    return userOwes()
+
 
 @app.route('/deletevent/', methods =['POST'])
 def delete_event():
