@@ -1,10 +1,9 @@
 <!doctype html>
 <html>
    <body>
-   
-      Result : {{ msg[0] }}
-      Count : {{count}}
-      <h2><a href = "\">go back to home page</a></h2>
-      
+
+      Result : {{ msg }}
+      <h2><a href = "{{ url_for('home') }}">go back to home page</a></h2>
+
    </body>
 </html>

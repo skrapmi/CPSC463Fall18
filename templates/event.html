@@ -31,8 +31,8 @@
 <body>
   <header>
     <div class="top-tray">
-      <input type="text" name="" class="log-out-button" value="Log Out" onclick="document.getElementById('').style.display='block'" style="width:auto;">
-      <input type="text" class="logo" value="Items Page">
+      <input type="text" name="" class="log-out-button" value="Log Out" onclick="window.location.href='/'" style="width:auto;">
+      <input type="text" class="logo" value="Events Page">
     </div>
   </header>
 
@@ -86,7 +86,7 @@
       </div>
       <form methon="POST">
         <div class="col-sm-offset-3">
-          <label for="Item" style="font-size:32px">{{msg[1]}} Event at {{msg[2]}}</label>  
+          <label for="Item" style="font-size:32px">{{msg[1]}} Event at {{msg[2]}}</label>
         </div>
         {% for i in msg2 %}
           <div class="col-sm-offset-3">

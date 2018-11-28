@@ -1,16 +1,21 @@
 import flask
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 from flask import request, jsonify
 from config import Config
 from flask import url_for
 from flask_wtf import Form
 from wtforms import TextField
+from flask import Flask
+from flask.ext.cache import Cache
 import sqlite3
 import sys
+
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 app.secret_key = 'development key'
+cache = Cache(app,config={'CACHE_TYPE': 'simple'})
+
 
 # Global Scope
 userdb = None
@@ -113,7 +118,8 @@ def home():
     if (user != None) and (userpass != None):
         return (validateUser(user, userpass))
     form = ContactForm()
-    return render_template('index.html', form = form)
+    return render_template("index.html", form = form)
+    #return redirect(url_for('home', user = user, userpass = userpass))
 
 def validateUser(na, pw):
     global userdb, logindbfile
@@ -142,6 +148,7 @@ def userOwes(): #name):
     for i in range (0, count):
         temp = user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i]
         results.append(temp)
+    user_db.commit()
     user_db.close()
     return render_template("home.html", msg = results, count = count)
 
@@ -174,15 +181,41 @@ def next_page():
 def add_event():
     print('----------------- add_event--------')
     global userdb
+    
     user_db , user_cur = open_db(userdb)
     event = str(request.args.get('event'))
     location = str(request.args.get('location'))
     date = str(request.args.get('date'))
-    user_cur.execute('INSERT INTO eventlist(eventname, location, date) VALUES(?,?,?)', (event, location, date))
-    print('Event Added')
+    user_cur.execute('INSERT OR IGNORE INTO eventlist(eventname, location, date) VALUES(?,?,?)', (event, location, date))
     user_db.commit()
+    msg = "Record successfully added"
+    print('Event Added')
+    return render_template("result.html", msg = msg)
     user_db.close()
-    return userOwes()
+
+
+@app.route("/forward/", methods=['POST'])
+def move_forward():
+    #Moving forward code
+    forward_message = "Moving Forward..."
+    return render_template('index.html', message=forward_message);
+
+@app.route('/deletevent/', methods =['POST'])
+def delete_event():
+    print('----------------- delete_event--------')
+    
+    user_db , user_cur = open_db(userdb)
+    event = str(request.args.get('event'))
+    location = str(request.args.get('location'))
+    date = str(request.args.get('date'))
+    user_cur.execute('DELETE FROM eventlist')
+    msg = "Record successfully deleted"
+    print('Event Deleted')
+    user_db.commit()
+    user_db.close()    
+    return render_template("result.html", msg = msg)
+    
+
     
 @app.route('/eventitems/', methods=['GET', 'POST'])
 def display_items():
@@ -249,7 +282,15 @@ if __name__ == '__main__':
     app.run()
 
 
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect('/')
+
+
 # Below are items I have not worked on!!!!!
+
 
 
 
@@ -290,9 +331,6 @@ def remove_page():
 
 
 
-
-
-
 ################################################  What's this for?
 @app.route('/home', methods=['GET' , 'POST'])
 def eventlist():
@@ -311,3 +349,7 @@ def get_users():
         users.append(str(cur.execute("SELECT * FROM userlogin").fetchall()[i][1]))
     logindb.close()
     return render_template('result.html', msg = str(users))
+
+
+
+
