@@ -85,16 +85,21 @@
     <div class="column">
       <div class="panel-title text-center">
         <p>Add New Event<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
-        <form action="/deletevent/" method="post">
-          <button name="forwardBtn" type="submit">Delete All</button>
-        </form>
       </div>
 
 
       <form method="POST" action='/eventitems/'>
         {% for i in msg %}
           <div class="col-sm-offset-3">
-            <input type="submit" name="button" class="block" value="{{i[1]}} on {{i[3]}}"> <a href=# > <button type="btn btn-default">TEST</button></a><!--style="font-size:24px">{{i[0]}} on {{i[1]}}</button>-->
+            <input type="submit" name="button" class="block" value="{{i[1]}} on {{i[3]}}">
+          </div>
+        {% endfor %}
+      </form>
+
+      <form method="POST" action='/deletevent/'>
+        {% for i in msg %}
+          <div class="col-sm-offset-3">
+            <a href= "{{ url_for('move_forward') }}" > <button type="btn btn-default">Delete</button></a>
           </div>
         {% endfor %}
       </form>
@@ -120,7 +125,7 @@
             <div class="modal-body">
               <p>Event Name: <input type="text" name="event" value="event" required></p>
               <p>Location: <input type="text" autocomplete="off" name="location" value="" required></p>
-              <p>Event Date: <input type="text" id="datepicker" autocomplete="off" name="date" value="" required></p>
+              <p>Event Date: <input type="text" id="datepicker" required></p>
 
                 <!-- <hr>
                 <p>Upload a Receipt:</p>
