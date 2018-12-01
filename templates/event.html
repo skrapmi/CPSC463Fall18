@@ -32,7 +32,7 @@
   <header>
     <div class="top-tray">
       <input type="text" name="" class="log-out-button" value="Log Out" onclick="window.location.href='/'" style="width:auto;">
-      <input type="text" class="logo" value="Events Page">
+      <input type="text" class="logo" value="Events Page" onclick="window.location.href='/forward/'">
     </div>
   </header>
 
@@ -43,12 +43,12 @@
       <div class="panel panel-info panel-widget">
         <div class="panel-body">
           <div id="hacker-list">
-            <ul class="list">
+            <ol class="list">
                   <li data-id="1">
                     <div class="friend">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='cpt_america.png') }}"/><a href="#" class="friend-name">Johnny</a></p>
                     </div>
-                  </li>
+                  </>
                   <li data-id="2">
                     <div class="friend">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='ironman.png') }}"/><a href="#" class="friend-name">Sandra</a></p>
@@ -74,41 +74,41 @@
                       <p><img class="friend-icon" src="{{ url_for('static', filename='spiderman-3309033_1280.jpg') }}"/><a href="#" class="friend-name">Peter</a></p>
                     </div>
                   </li>
-            </ul>
+            </ol>
           </div>
         </div>
       </div>
     </div>
 
+    <!--Adding eventitems-->
     <div class="column">
       <div class="panel-title text-center">
         <p>Add New Item<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id06').style.display='block'"></span></p>
       </div>
-      <form methon="POST">
-        <div class="col-sm-offset-3">
-          <label for="Item" style="font-size:32px">{{msg[1]}} Event at {{msg[2]}}</label>
+      <!--Deleting eventitems-->
+      <form method="POST" action='/deletevent/'>
+        <div class="col-sm-offset-4">
+          <label for="Item" style="font-size:32px">{{msg[1]}} at {{msg[2]}}</label>
         </div>
         {% for i in msg2 %}
           <div class="col-sm-offset-3">
-            <button type="submit" name="button" class="block" style="font-size:24px">{{i[2]}} for {{i[6]}} which was {{i[4]}} </button>
+            <p class="col-sm-offset-3" style="font-size:20px"> <button name="currItem" value="{{i[2]}}" class="fa fa-minus-circle" style="font-size:20px" style="cursor:pointer" onclick="document.getElementById('id09').style.display='block'"></button> {{i[2]}}: {{i[4]}} </p>
           </div>
         {% endfor %}
+			<p class="col-sm-offset-6" style="font-weight:800">Total Owed: {{msg3}}</p>
       </form>
     </div>
   </div>
 
 
-
-
-
-<!--Sign up modal-->
+<!--Add Item up modal-->
   <div class="container">
     <div class="row">
       <div id="id06" class="modal w3-animate-opacity" role="dialog">
         <div class="modal-dialog ">
           <form class="modal-content" action="/additem/">
             <div class="modal-header">
-              <h4 class="modal-title">Add a new item to {{msg[2]}}</h4>
+              <h4 class="modal-title">Add a new item to {{msg[1]}}</h4>
             </div>
             <div class="modal-body">
               <p>Please fill in this form to add an Item.</p>
@@ -120,11 +120,11 @@
               <div class="clearfix"></div>
               <br>
 
-              <label class="col-sm-3" for="itemquantity"><b>Item Quantity:</b></label>
+              <label class="col-sm-3" for="itemquantity"><b>Quantity:</b></label>
               <input class="col-sm-6" type="text" placeholder="Enter Quantity" name="itemquantity" value="" required>
               <div class="clearfix"></div>
 
-              <label class="col-sm-3" for="price"><b>Item Price:</b></label>
+              <label class="col-sm-3" for="price"><b>Price:</b></label>
               <input class="col-sm-6" type="text" placeholder="Item Price" name="price" value="" required>
               <div class="clearfix"></div>
               <br>

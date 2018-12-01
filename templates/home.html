@@ -96,13 +96,13 @@
         {% endfor %}
       </form>
 
-      <form method="POST" action='/deletevent/'>
+      <!--<form method="POST" action='/deletevent/'>
         {% for i in msg %}
           <div class="col-sm-offset-3">
             <a href= "{{ url_for('move_forward') }}" > <button type="btn btn-default">Delete</button></a>
           </div>
         {% endfor %}
-      </form>
+      </form>-->
     </div>
   </div>
 
@@ -119,18 +119,13 @@
           <form class="modal-content" action="/addevent/">
             <!--Modal Header-->
             <div class="modal-header">
-              <h4 class="modal-title">Create A New Event</h4>
+              <h4 class="modal-title">Create A New Event</h 4>
             </div>
             <!--Modal Body-->
             <div class="modal-body">
               <p>Event Name: <input type="text" name="event" value="event" required></p>
               <p>Location: <input type="text" autocomplete="off" name="location" value="" required></p>
-              <p>Event Date: <input type="text" id="datepicker" required></p>
-
-                <!-- <hr>
-                <p>Upload a Receipt:</p>
-                <input type="file" name="fileToUpload" id="fileToUpload">
-                <input type="submit" value="Upload Image" name="submit"> -->
+              <p>Event Date: <input type="text" name ="date"required></p>
             </div>
             <!--Modal Footer-->
             <div class="modal-footer">

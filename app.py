@@ -6,20 +6,22 @@ from flask import url_for
 from flask_wtf import Form
 from wtforms import TextField
 from flask import Flask
-from flask.ext.cache import Cache
+#from flask.ext.cache import Cache
 import sqlite3
-import sys
+import logging, sys
 
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 app.secret_key = 'development key'
-cache = Cache(app,config={'CACHE_TYPE': 'simple'})
+#cache = Cache(app,config={'CACHE_TYPE': 'simple'})
+logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 
 # Global Scope
 userdb = None
 logindbfile = "login.db"
+
 
 class ContactForm(Form):
     name = TextField("Test Name")
@@ -30,7 +32,7 @@ def open_db(name):
     cur = conn.cursor()
     # Let rows returned be of dict/tuple type
     conn.row_factory = sqlite3.Row
-    print ("Openned database %s as %r" % (name, conn))
+    print ("Opened database %s as %r" % (name, conn))
 
     #create login file is not already exists
     if name == 'login.db':
@@ -212,22 +214,30 @@ def move_forward():
     return userOwes()
 
 
-@app.route('/deletevent/', methods =['POST'])
+@app.route('/deletevent/', methods =['GET', 'POST'])
 def delete_event():
     print('----------------- delete_event--------')
     
     user_db , user_cur = open_db(userdb)
-    event = str(request.args.get('event'))
-    location = str(request.args.get('location'))
-    date = str(request.args.get('date'))
-    user_cur.execute('DELETE FROM eventlist')
+    
+    event_item_count = getTableSize(user_cur, 'eventitems')
+    
+    for i in range (event_item_count):
+	ItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute("SELECT SUM(price) FROM eventitems").fetchone()[0])))) 
+    
+    item = (request.form['currItem'])   
+    logging.debug(item)
+    user_cur.execute('DELETE FROM eventitems WHERE EXISTS (SELECT 1 FROM eventlist WHERE eventitems.event_id = eventlist.eventlist_id AND eventitems.itemdescription = ?)',(item,))
+        
+       
+    
     msg = "Record successfully deleted"
     print('Event Deleted')
     user_db.commit()
     user_db.close()    
-    return render_template("result.html", msg = msg)
+    return render_template("result.html", msg = msg, msg3 = ItemTotal)
     
-
+    
     
 @app.route('/eventitems/', methods=['GET', 'POST'])
 def display_items():
@@ -239,13 +249,16 @@ def display_items():
     event_count = getTableSize(user_cur, 'eventlist')
     if request.method == 'POST':
         for i in range (event_count):
-            if (request.form['button'].decode('utf-8')).split(' on ')[0] == (str(user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][1])):
+            if (request.form['button']).split(' on ')[0] == (str(user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][1])):
                 event_num = user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][0]
                 event_loc = user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][2]
     
     associate_event = user_cur.execute('SELECT * FROM eventlist WHERE eventlist_id=(?)', (event_num,)).fetchone()
+    itemTotals = []
     display = ()
     displayitems = []
+    ItemTotal = ()
+    
     event_item_count = getTableSize(user_cur, 'eventitems')
     for i in range (event_item_count):
         if event_num == user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][1]:
@@ -258,12 +271,23 @@ def display_items():
                                 str('$'+ str(float("{0:.2f}".format(user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][4])))), \
                                 user_cur.execute('''SELECT * FROM eventitems''').fetchall()[i][5], \
                                 str(cur.execute('SELECT username FROM userlogin WHERE user_id=(?)', (linkeduser,)).fetchone()[0]))
-            print(display)
-
+	
+	    
+            ItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute("SELECT SUM(price) FROM eventitems").fetchone()[0]))))
+            #logging.debug(display)
+	    
             displayitems.append(display)
+	    
     user_db.close()
     logindb.close()
-    return render_template("event.html", msg2 = displayitems, msg = associate_event)
+    #logging.debug(ItemTotal)
+    
+    if ItemTotal == ():
+        return render_template("event.html", msg2 = displayitems, msg = associate_event, msg3 = str('$' + "0.00"))
+    else:
+        return render_template("event.html", msg2 = displayitems, msg = associate_event, msg3 = ItemTotal)
+    
+    
 
 @app.route('/additem/', methods =['GET','POST'])
 def add_item():
@@ -276,17 +300,16 @@ def add_item():
     quantity = int(request.args.get('itemquantity'))
     eventname = str(request.args.get('submit'))
     eventid = user_cur.execute('SELECT * FROM eventlist WHERE eventname=(?)', (eventname,)).fetchone()[0]
-    user_cur.execute('INSERT INTO eventitems(itemdescription, quantity, price, linkeduser_id,event_id) VALUES(?,?,?,?,?)', (item, quantity, price, 1, eventid))
+    user_cur.execute('INSERT INTO eventitems(itemdescription, quantity, price, linkeduser_id, event_id) VALUES(?,?,?,?,?)', (item, quantity, price, 1, eventid))
     new_overall_total = (price * quantity) + user_cur.execute('SELECT overallamount FROM eventlist WHERE eventlist_id=(?)', (eventid,)).fetchone()[0]
     print(new_overall_total)
     print(type(new_overall_total))
     user_cur.execute('UPDATE eventlist set overallamount = ? WHERE eventname = ?', (new_overall_total,eventname))
-
-    print('Item Added')
+    msg = "item successfully added"
     user_db.commit()
     user_db.close()
     logindb.close()
-    return display_items()
+    return render_template("result.html", msg = msg)
 
 
 
