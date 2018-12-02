@@ -218,23 +218,36 @@ def move_forward():
 def delete_event():
     print('----------------- delete_event--------')
     
+    
     user_db , user_cur = open_db(userdb)
+    item = ()
+    event = ()
     
     event_item_count = getTableSize(user_cur, 'eventitems')
-    
     for i in range (event_item_count):
 	ItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute("SELECT SUM(price) FROM eventitems").fetchone()[0])))) 
     
-    item = (request.form['currItem'])   
-    logging.debug(item)
-    user_cur.execute('DELETE FROM eventitems WHERE EXISTS (SELECT 1 FROM eventlist WHERE eventitems.event_id = eventlist.eventlist_id AND eventitems.itemdescription = ?)',(item,))
-        
-       
+    item = (request.form['currItem'])
+    itemsId = user_cur.execute('SELECT item_id FROM eventitems WHERE itemdescription = ?', (item,)).fetchone()[0]
+    eventId = user_cur.execute('SELECT event_id FROM eventitems WHERE itemdescription = ?', (item,)).fetchone()[0]
     
+    #user_cur.execute('DELETE FROM eventitems WHERE EXISTS (SELECT 1 FROM eventlist WHERE eventitems.event_id = eventlist.eventlist_id AND eventitems.itemdescription = ?)',(item,))
+    user_cur.execute('DELETE FROM eventitems WHERE item_id = ?',(itemsId,))
+    dbSize = user_cur.execute('SELECT event_id FROM eventitems WHERE event_id = ?',(eventId,)).fetchall()
+    
+    
+    if dbSize == []:
+        user_cur.execute('DELETE FROM eventlist WHERE eventlist_id = ?', (eventId,))
+	
     msg = "Record successfully deleted"
     print('Event Deleted')
+    logging.debug(dbSize)
+    logging.debug(item)
+    logging.debug(itemsId)
+    logging.debug(eventId)
     user_db.commit()
-    user_db.close()    
+    user_db.close()  
+    
     return render_template("result.html", msg = msg, msg3 = ItemTotal)
     
     
@@ -274,13 +287,11 @@ def display_items():
 	
 	    
             ItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute("SELECT SUM(price) FROM eventitems").fetchone()[0]))))
-            #logging.debug(display)
 	    
             displayitems.append(display)
 	    
     user_db.close()
     logindb.close()
-    #logging.debug(ItemTotal)
     
     if ItemTotal == ():
         return render_template("event.html", msg2 = displayitems, msg = associate_event, msg3 = str('$' + "0.00"))
@@ -299,7 +310,10 @@ def add_item():
     price = float("{0:.2f}".format(float(request.args.get('price'))))
     quantity = int(request.args.get('itemquantity'))
     eventname = str(request.args.get('submit'))
-    eventid = user_cur.execute('SELECT * FROM eventlist WHERE eventname=(?)', (eventname,)).fetchone()[0]
+    
+    logging.debug(eventname)
+    eventid = user_cur.execute('SELECT * FROM eventlist WHERE eventname=(?)', (eventname,)).fetchone()[0] #cant enter spaces in event name
+    
     user_cur.execute('INSERT INTO eventitems(itemdescription, quantity, price, linkeduser_id, event_id) VALUES(?,?,?,?,?)', (item, quantity, price, 1, eventid))
     new_overall_total = (price * quantity) + user_cur.execute('SELECT overallamount FROM eventlist WHERE eventlist_id=(?)', (eventid,)).fetchone()[0]
     print(new_overall_total)

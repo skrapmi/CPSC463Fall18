@@ -45,32 +45,32 @@
           <div id="hacker-list">
             <ol class="list">
                   <li data-id="1">
-                    <div class="friend">
+                    <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='cpt_america.png') }}"/><a href="#" class="friend-name">Johnny</a></p>
                     </div>
                   </>
                   <li data-id="2">
-                    <div class="friend">
+                    <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='ironman.png') }}"/><a href="#" class="friend-name">Sandra</a></p>
                     </div>
                   </li>
                   <li data-id="3">
-                    <div class="friend">
+                    <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='thor.png') }}"/><a href="#" class="friend-name">Ralph</a></p>
                     </div>
                   </li>
                   <li data-id="4">
-                    <div class="friend">
+                    <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='iron-man-2507706_1280.png') }}"/><a href="#" class="friend-name">Andrew</a></p>
                     </div>
                   </li>
                   <li data-id="5">
-                    <div class="friend">
+                    <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='captain-marvel-2977923_1280.jpg') }}"/><a href="#" class="friend-name">Sasha</a></p>
                     </div>
                   </li>
                   <li data-id="6">
-                    <div class="friend">
+                    <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='spiderman-3309033_1280.jpg') }}"/><a href="#" class="friend-name">Peter</a></p>
                     </div>
                   </li>
@@ -105,7 +105,7 @@
   <div class="container">
     <div class="row">
       <div id="id06" class="modal w3-animate-opacity" role="dialog">
-        <div class="modal-dialog ">
+        <div class="modal-dialog">
           <form class="modal-content" action="/additem/">
             <div class="modal-header">
               <h4 class="modal-title">Add a new item to {{msg[1]}}</h4>
@@ -115,7 +115,7 @@
 
               <hr>
 
-              <label class="col-sm-3" for="itemname"><b>Item Name: </b></label>
+              <label class="col-sm-3" for="itemname"><b>Item Name:</b></label>
               <input class="col-sm-6" type="text" placeholder="Enter Item Name" name="itemname" value="" required>
               <div class="clearfix"></div>
               <br>
@@ -124,11 +124,11 @@
               <input class="col-sm-6" type="text" placeholder="Enter Quantity" name="itemquantity" value="" required>
               <div class="clearfix"></div>
 
+
               <label class="col-sm-3" for="price"><b>Price:</b></label>
               <input class="col-sm-6" type="text" placeholder="Item Price" name="price" value="" required>
               <div class="clearfix"></div>
               <br>
-
             </div>
               <div class="modal-footer">
                 <button type="submit" class="signup" name=submit value={{msg[1]}}><i class="fa fa-check-square-o"></i>Add Item</button>
@@ -139,8 +139,6 @@
       </div>
     </div>
   </div>
-
-
 
 
 
