@@ -83,9 +83,10 @@
     <!--Adding eventitems-->
     <div class="column">
       <div class="panel-title text-center">
-        <p> Add New Item <span class="fa fa-plus-circle" style="font-size:24px, cursor:pointer"  onclick="document.getElementById('id06').style.display='block'"></span></p>
+        <p> Add New Item <span class="fa fa-plus-circle" style="font-size:24px, cursor:pointer" onclick="document.getElementById('id06').style.display='block'"></span></p>
       </div>
       <!--Deleting eventitems-->
+
       <form method="POST" action="/deletevent/">
         <div class="col-sm-offset-5">
           <label for="Item" style="font-size:32px">{{msg[1]}} at {{msg[2]}}</label>
@@ -94,11 +95,12 @@
           <div class="col-sm-offset-4">
             <p class="col-sm-offset-3" style="font-size:20px"> <button name="currItem" value="{{i[2]}}" class="fa fa-minus-circle" style="font-size:20px, cursor:pointer" onclick="document.getElementById('id09').style.display='block'"></button> {{i[2]}}: {{i[4]}} </p>
           </div>
-        {% endfor %}
 
+        {% endfor %}
       </form>
 
     </div>
+
     <p class="col-sm-offset-9" style="font-size:25px">Items Total: {{msg4}}</p>
     <p class="col-sm-offset-9" style="font-size:40px">Total Owed: {{msg3}}</p>
   </div>

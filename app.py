@@ -264,6 +264,7 @@ def display_items():
     display = ()
     displayitems = []
     ItemTotal = ()
+    eventItemTotal = ()
     event = request.form['button']
     event = event.split()[0]
     
@@ -283,9 +284,10 @@ def display_items():
 	
 	    
             ItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute("SELECT SUM(price) FROM eventitems").fetchone()[0]))))
+            eventItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute('SELECT SUM(price) FROM eventitems WHERE event_id = ?', (associate_event[0],)).fetchone()[0]))))
             displayitems.append(display)
             
-    eventItemTotal = str('$'+ str(user_cur.execute('SELECT SUM(price) FROM eventitems WHERE event_id = ?', (associate_event[0],)).fetchone()[0]))
+    
 	    
     user_db.close()
     logindb.close()
