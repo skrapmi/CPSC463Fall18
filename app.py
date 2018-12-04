@@ -6,7 +6,6 @@ from flask import url_for
 from flask_wtf import Form
 from wtforms import TextField
 from flask import Flask
-#from flask.ext.cache import Cache
 import sqlite3
 import logging, sys
 
@@ -14,7 +13,6 @@ import logging, sys
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 app.secret_key = 'development key'
-#cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 
@@ -211,7 +209,6 @@ def move_forward():
 def delete_event():
     print('----------------- delete_event--------')
     
-    
     user_db , user_cur = open_db(userdb)
     item = ()
     event = ()
@@ -222,7 +219,7 @@ def delete_event():
     
     event_item_count = getTableSize(user_cur, 'eventitems')
     for i in range (event_item_count):
-	ItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute("SELECT SUM(price) FROM eventitems").fetchone()[0]))))
+        ItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute("SELECT SUM(price) FROM eventitems").fetchone()[0]))))
     
     user_cur.execute('DELETE FROM eventitems WHERE item_id = ?',(itemsId,))
     user_db.commit()
@@ -244,7 +241,7 @@ def delete_event():
     user_db.commit()
     user_db.close()  
     
-    return render_template("result.html", msg = msg, msg3 = ItemTotal)#, msg4 = eventItemTotal)
+    return render_template("result.html", msg = msg, msg3 = ItemTotal)
     
     
     
@@ -295,7 +292,7 @@ def display_items():
     
     logging.debug(event)
     logging.debug(eventItemTotal)
-    #logging.debug(associate_event_id)
+ 
     
     if ItemTotal == ():
         return render_template("event.html", msg2 = displayitems, msg = associate_event, msg3 = str('$' + "0.00"), msg4 = str('$' + "0.00"))

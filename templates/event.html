@@ -48,7 +48,7 @@
                     <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='cpt_america.png') }}"/><a href="#" class="friend-name">Johnny</a></p>
                     </div>
-                  </>
+                  </li>
                   <li data-id="2">
                     <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='ironman.png') }}"/><a href="#" class="friend-name">Sandra</a></p>
@@ -83,16 +83,16 @@
     <!--Adding eventitems-->
     <div class="column">
       <div class="panel-title text-center">
-        <p>Add New Item<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id06').style.display='block'"></span></p>
+        <p> Add New Item <span class="fa fa-plus-circle" style="font-size:24px, cursor:pointer"  onclick="document.getElementById('id06').style.display='block'"></span></p>
       </div>
       <!--Deleting eventitems-->
-      <form method="POST" action='/deletevent/'>
+      <form method="POST" action="/deletevent/">
         <div class="col-sm-offset-5">
           <label for="Item" style="font-size:32px">{{msg[1]}} at {{msg[2]}}</label>
         </div>
         {% for i in msg2 %}
           <div class="col-sm-offset-4">
-            <p class="col-sm-offset-3" style="font-size:20px"> <button name="currItem" value="{{i[2]}}" class="fa fa-minus-circle" style="font-size:20px" style="cursor:pointer" onclick="document.getElementById('id09').style.display='block'"></button> {{i[2]}}: {{i[4]}} </p>
+            <p class="col-sm-offset-3" style="font-size:20px"> <button name="currItem" value="{{i[2]}}" class="fa fa-minus-circle" style="font-size:20px, cursor:pointer" onclick="document.getElementById('id09').style.display='block'"></button> {{i[2]}}: {{i[4]}} </p>
           </div>
         {% endfor %}
 
@@ -118,23 +118,27 @@
 
               <hr>
 
-              <label class="col-sm-3" for="itemname"><b>Item Name:</b></label>
+              <label class="col-sm-4" for="itemname"><b>Item:</b></label>
+              <br>
               <input class="col-sm-6" type="text" placeholder="Enter Item Name" name="itemname" value="" required>
               <div class="clearfix"></div>
-              <br>
 
-              <label class="col-sm-3" for="itemquantity"><b>Quantity:</b></label>
+
+              <label class="col-sm-4" for="itemquantity"><b>Qty:</b></label>
+              <br>
               <input class="col-sm-6" type="text" placeholder="Enter Quantity" name="itemquantity" value="" required>
               <div class="clearfix"></div>
 
 
-              <label class="col-sm-3" for="price"><b>Price:</b></label>
+              <label class="col-sm-4" for="price"><b>Price:</b></label>
+              <br>
               <input class="col-sm-6" type="text" placeholder="Item Price" name="price" value="" required>
               <div class="clearfix"></div>
-              <br>
+
+
             </div>
               <div class="modal-footer">
-                <button type="submit" class="signup" name=submit value={{msg[1]}}><i class="fa fa-check-square-o"></i>Add Item</button>
+                <button type="submit" class="signup" name="submit" value="{{msg[1]}}"><i class="fa fa-check-square-o"></i>Add Item</button>
                 <button type="button" onclick="document.getElementById('id06').style.display='none'" class="cancelbtn"><i class="fa fa-times-rectangle-o"></i> Cancel</button>
               </div>
           </form>

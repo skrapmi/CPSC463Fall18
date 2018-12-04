@@ -84,10 +84,10 @@
 
     <div class="column">
       <div class="panel-title text-center">
-        <p>Add New Event<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
+        <p>Add New Event<span class="fa fa-plus-circle" style="font-size:24px" onclick="document.getElementById('id03').style.display='block'"></span></p>
       </div>
 
-      <form method="POST" action='/eventitems/'>
+      <form method="POST" action="/eventitems/">
         {% for i in msg %}
           <div class="col-sm-offset-3">
             <input type="submit" name="button" class="block" value="{{i[1]}} on {{i[3]}}">
@@ -110,13 +110,13 @@
           <form class="modal-content" action="/addevent/" method="">
             <!--Modal Header-->
             <div class="modal-header">
-              <h4 class="modal-title">Create A New Event</h 4>
+              <h4 class="modal-title">Create A New Event</h4>
             </div>
             <!--Modal Body-->
             <div class="modal-body">
               <p>Event Name: <input type="text" name="event" value="event" required></p>
               <p>Location: <input type="text" autocomplete="off" name="location" value="" required></p>
-              <p>Event Date: <input type="text" name ="date"required></p>
+              <p>Event Date: <input type="text" name ="date" required></p>
             </div>
             <!--Modal Footer-->
             <div class="modal-footer">
@@ -146,8 +146,8 @@
             </div>
             <!--Modal Body-->
             <div class="modal-body">
-              <p>Event Date: <input type="text" name="" readonly></p></p>
-              <p>Collaborator: <input type="text" name="" readonly></p></p>
+              <p>Event Date: <input type="text" name="" readonly></p>
+              <p>Collaborator: <input type="text" name="" readonly></p>
             </div>
             <!--Modal Footer-->
             <div class="modal-footer">
