@@ -92,12 +92,14 @@
         </div>
         {% for i in msg2 %}
           <div class="col-sm-offset-3">
-            <p class="col-sm-offset-3" style="font-size:20px"> <button name="currItem" value="{{i[2]}}" class="fa fa-minus-circle" style="font-size:20px" style="cursor:pointer" onclick="document.getElementById('id09').style.display='block'"></button> {{i[2]}}: {{i[4]}} </p>
+            <p class="col-sm-offset-3" style="font-size:20px"> <button name="currItem" value="{{i[2]}}" class="fa fa-minus-circle" style="font-size:20px" style="cursor:pointer" onclick="document.getElementById('id09').style.display='block'"></button> ({{i[3]}}) {{i[2]}}: {{i[4]}} </p>
           </div>
         {% endfor %}
-			<p class="col-sm-offset-6" style="font-weight:800">Total Owed: {{msg3}}</p>
+        <p class="col-sm-offset-6" style="font-weight:800">Items Total: {{msg4}}</p>
       </form>
+
     </div>
+    <p class="col-sm-offset-9" style="font-size:30px">Total Owed: {{msg3}}</p>
   </div>
 
 
@@ -145,7 +147,7 @@
   <footer>
     <div class="bottom-tray">
       <p>About Us | Jobs | How It Works | Contact Us</p>
-      <p>&copy 2018 *Placeholder*</p>
+      <p>Who owes who? &copy 2018</p>
       <a href="#" class="fa fa-facebook"></a>
       <a href="#" class="fa fa-twitter"></a>
       <a href="#" class="fa fa-snapchat-ghost"></a>

@@ -121,26 +121,21 @@ def home():
         return (validateUser(user, userpass))
     form = ContactForm()
     return render_template("index.html", form = form)
-    #return redirect(url_for('home', user = user, userpass = userpass))
 
 def validateUser(na, pw):
     global userdb, logindbfile
-    #dbuser = None
-    #dbpass = None
     logindb , cur = open_db(logindbfile)
     count = getTableSize(cur, 'userlogin')
     for i in range (count):
-        #print('&&&&&&&&&&&&&&&&&&&&&&& '+ str(count))
         if str(na) == str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', (na,)).fetchone()[i]):
-            #print(type(str(na)), ' ', type(str(cur.execute('''SELECT username FROM userlogin WHERE username=(?)''', (na,)).fetchone()[i])))
             if(str(pw) == str(cur.execute('''SELECT password FROM userlogin WHERE username=(?)''', (na,)).fetchone()[i])): 
                 userdb = (str(cur.execute('''SELECT userdbfilename FROM userlogin WHERE username=(?)''', (na,)).fetchone()[i]))
-                return userOwes() #na)
+                return userOwes() 
     logindb.close()
     print("no match")
     return render_template('index.html')
 
-def userOwes(): #name):
+def userOwes(): 
     print('----------------- user owes--------')
     global userdb
     user_db, user_cur = open_db(userdb)
@@ -195,8 +190,6 @@ def add_event():
     print('Event Added')
     return render_template("result.html", msg = msg)
    
-    
-
 
 @app.route("/forward/", methods=['GET'])
 def move_forward():
@@ -231,11 +224,14 @@ def delete_event():
     itemsId = user_cur.execute('SELECT item_id FROM eventitems WHERE itemdescription = ?', (item,)).fetchone()[0]
     eventId = user_cur.execute('SELECT event_id FROM eventitems WHERE itemdescription = ?', (item,)).fetchone()[0]
     
-    #user_cur.execute('DELETE FROM eventitems WHERE EXISTS (SELECT 1 FROM eventlist WHERE eventitems.event_id = eventlist.eventlist_id AND eventitems.itemdescription = ?)',(item,))
+    user_cur.execute('DELETE FROM eventitems WHERE EXISTS (SELECT 1 FROM eventlist WHERE eventitems.event_id = eventlist.eventlist_id AND eventitems.itemdescription = ?)',(item,))
     user_cur.execute('DELETE FROM eventitems WHERE item_id = ?',(itemsId,))
+    
     dbSize = user_cur.execute('SELECT event_id FROM eventitems WHERE event_id = ?',(eventId,)).fetchall()
     
+    eventItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute('SELECT overallamount FROM eventlist WHERE eventlist_id = ?', (eventId,)).fetchone()[0]))))
     
+    #if deleting last item, delete entire event
     if dbSize == []:
         user_cur.execute('DELETE FROM eventlist WHERE eventlist_id = ?', (eventId,))
 	
@@ -248,7 +244,7 @@ def delete_event():
     user_db.commit()
     user_db.close()  
     
-    return render_template("result.html", msg = msg, msg3 = ItemTotal)
+    return render_template("result.html", msg = msg, msg3 = ItemTotal, msg4 = eventItemTotal)
     
     
     
@@ -267,10 +263,12 @@ def display_items():
                 event_loc = user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][2]
     
     associate_event = user_cur.execute('SELECT * FROM eventlist WHERE eventlist_id=(?)', (event_num,)).fetchone()
-    itemTotals = []
     display = ()
     displayitems = []
     ItemTotal = ()
+    event = request.form['button']
+    event = event.split()[0]
+    
     
     event_item_count = getTableSize(user_cur, 'eventitems')
     for i in range (event_item_count):
@@ -287,16 +285,20 @@ def display_items():
 	
 	    
             ItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute("SELECT SUM(price) FROM eventitems").fetchone()[0]))))
-	    
             displayitems.append(display)
+            
+    eventItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute('SELECT overallamount FROM eventlist WHERE eventname = ?', (event,)).fetchone()[0]))))
 	    
     user_db.close()
     logindb.close()
     
+    logging.debug(event)
+    logging.debug(eventItemTotal)
+    
     if ItemTotal == ():
-        return render_template("event.html", msg2 = displayitems, msg = associate_event, msg3 = str('$' + "0.00"))
+        return render_template("event.html", msg2 = displayitems, msg = associate_event, msg3 = str('$' + "0.00"), msg4 = str('$' + "0.00"))
     else:
-        return render_template("event.html", msg2 = displayitems, msg = associate_event, msg3 = ItemTotal)
+        return render_template("event.html", msg2 = displayitems, msg = associate_event, msg3 = ItemTotal, msg4 = eventItemTotal)
     
     
 
@@ -310,12 +312,13 @@ def add_item():
     price = float("{0:.2f}".format(float(request.args.get('price'))))
     quantity = int(request.args.get('itemquantity'))
     eventname = str(request.args.get('submit'))
+    #eventname = request.form['event']
     
     logging.debug(eventname)
     eventid = user_cur.execute('SELECT * FROM eventlist WHERE eventname=(?)', (eventname,)).fetchone()[0] #cant enter spaces in event name
     
     user_cur.execute('INSERT INTO eventitems(itemdescription, quantity, price, linkeduser_id, event_id) VALUES(?,?,?,?,?)', (item, quantity, price, 1, eventid))
-    new_overall_total = (price * quantity) + user_cur.execute('SELECT overallamount FROM eventlist WHERE eventlist_id=(?)', (eventid,)).fetchone()[0]
+    new_overall_total = (price) + user_cur.execute('SELECT overallamount FROM eventlist WHERE eventlist_id=(?)', (eventid,)).fetchone()[0]
     print(new_overall_total)
     print(type(new_overall_total))
     user_cur.execute('UPDATE eventlist set overallamount = ? WHERE eventname = ?', (new_overall_total,eventname))
