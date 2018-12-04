@@ -216,20 +216,20 @@ def delete_event():
     item = ()
     event = ()
     
-    event_item_count = getTableSize(user_cur, 'eventitems')
-    for i in range (event_item_count):
-	ItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute("SELECT SUM(price) FROM eventitems").fetchone()[0])))) 
-    
     item = (request.form['currItem'])
     itemsId = user_cur.execute('SELECT item_id FROM eventitems WHERE itemdescription = ?', (item,)).fetchone()[0]
-    eventId = user_cur.execute('SELECT event_id FROM eventitems WHERE itemdescription = ?', (item,)).fetchone()[0]
+    eventId = user_cur.execute('SELECT event_id FROM eventitems WHERE itemdescription = ?', (item,)).fetchone()[0]    
     
-    user_cur.execute('DELETE FROM eventitems WHERE EXISTS (SELECT 1 FROM eventlist WHERE eventitems.event_id = eventlist.eventlist_id AND eventitems.itemdescription = ?)',(item,))
+    event_item_count = getTableSize(user_cur, 'eventitems')
+    for i in range (event_item_count):
+	ItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute("SELECT SUM(price) FROM eventitems").fetchone()[0]))))
+    
+    user_cur.execute('DELETE FROM eventitems WHERE EXISTS (SELECT 1 FROM eventlist WHERE eventitems.event_id = eventlist.eventlist_id AND eventitems.item_id = ?)',(itemsId,))
     user_cur.execute('DELETE FROM eventitems WHERE item_id = ?',(itemsId,))
     
     dbSize = user_cur.execute('SELECT event_id FROM eventitems WHERE event_id = ?',(eventId,)).fetchall()
-    
-    eventItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute('SELECT overallamount FROM eventlist WHERE eventlist_id = ?', (eventId,)).fetchone()[0]))))
+    eventItemTotal = '$'+ str((user_cur.execute("SELECT SUM(price) FROM eventitems WHERE event_id = ?", (eventId,)).fetchone()[0]))
+     
     
     #if deleting last item, delete entire event
     if dbSize == []:
