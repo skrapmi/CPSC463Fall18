@@ -224,11 +224,11 @@ def delete_event():
     for i in range (event_item_count):
 	ItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute("SELECT SUM(price) FROM eventitems").fetchone()[0]))))
     
-    user_cur.execute('DELETE FROM eventitems WHERE EXISTS (SELECT 1 FROM eventlist WHERE eventitems.event_id = eventlist.eventlist_id AND eventitems.item_id = ?)',(itemsId,))
     user_cur.execute('DELETE FROM eventitems WHERE item_id = ?',(itemsId,))
+    user_db.commit()
     
     dbSize = user_cur.execute('SELECT event_id FROM eventitems WHERE event_id = ?',(eventId,)).fetchall()
-    eventItemTotal = '$'+ str((user_cur.execute("SELECT SUM(price) FROM eventitems WHERE event_id = ?", (eventId,)).fetchone()[0]))
+    #eventItemTotal = str('$'+ str((user_cur.execute('SELECT SUM(price) FROM eventitems').fetchone()[0])))
      
     
     #if deleting last item, delete entire event
@@ -244,7 +244,7 @@ def delete_event():
     user_db.commit()
     user_db.close()  
     
-    return render_template("result.html", msg = msg, msg3 = ItemTotal, msg4 = eventItemTotal)
+    return render_template("result.html", msg = msg, msg3 = ItemTotal)#, msg4 = eventItemTotal)
     
     
     
@@ -263,6 +263,7 @@ def display_items():
                 event_loc = user_cur.execute('''SELECT * FROM eventlist''').fetchall()[i][2]
     
     associate_event = user_cur.execute('SELECT * FROM eventlist WHERE eventlist_id=(?)', (event_num,)).fetchone()
+    
     display = ()
     displayitems = []
     ItemTotal = ()
@@ -287,13 +288,14 @@ def display_items():
             ItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute("SELECT SUM(price) FROM eventitems").fetchone()[0]))))
             displayitems.append(display)
             
-    eventItemTotal = str('$'+ str(float("{0:.2f}".format(user_cur.execute('SELECT overallamount FROM eventlist WHERE eventname = ?', (event,)).fetchone()[0]))))
+    eventItemTotal = str('$'+ str(user_cur.execute('SELECT SUM(price) FROM eventitems WHERE event_id = ?', (associate_event[0],)).fetchone()[0]))
 	    
     user_db.close()
     logindb.close()
     
     logging.debug(event)
     logging.debug(eventItemTotal)
+    #logging.debug(associate_event_id)
     
     if ItemTotal == ():
         return render_template("event.html", msg2 = displayitems, msg = associate_event, msg3 = str('$' + "0.00"), msg4 = str('$' + "0.00"))
