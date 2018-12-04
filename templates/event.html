@@ -87,19 +87,20 @@
       </div>
       <!--Deleting eventitems-->
       <form method="POST" action='/deletevent/'>
-        <div class="col-sm-offset-4">
+        <div class="col-sm-offset-5">
           <label for="Item" style="font-size:32px">{{msg[1]}} at {{msg[2]}}</label>
         </div>
         {% for i in msg2 %}
-          <div class="col-sm-offset-3">
-            <p class="col-sm-offset-3" style="font-size:20px"> <button name="currItem" value="{{i[2]}}" class="fa fa-minus-circle" style="font-size:20px" style="cursor:pointer" onclick="document.getElementById('id09').style.display='block'"></button> ({{i[3]}}) {{i[2]}}: {{i[4]}} </p>
+          <div class="col-sm-offset-4">
+            <p class="col-sm-offset-3" style="font-size:20px"> <button name="currItem" value="{{i[2]}}" class="fa fa-minus-circle" style="font-size:20px" style="cursor:pointer" onclick="document.getElementById('id09').style.display='block'"></button> {{i[2]}}: {{i[4]}} </p>
           </div>
         {% endfor %}
-        <p class="col-sm-offset-6" style="font-weight:800">Items Total: {{msg4}}</p>
+
       </form>
 
     </div>
-    <p class="col-sm-offset-9" style="font-size:30px">Total Owed: {{msg3}}</p>
+    <p class="col-sm-offset-9" style="font-size:25px">Items Total: {{msg4}}</p>
+    <p class="col-sm-offset-9" style="font-size:40px">Total Owed: {{msg3}}</p>
   </div>
 
 
