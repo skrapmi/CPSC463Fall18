@@ -1,9 +1,17 @@
-from app import createUser as testnewuser
+#from app import createUser as testnewuser
 import unittest 
 import os
+from selenium import webdriver
 
 #testnewuser = app.createUser
 
+#  Select your driver
+#driver = webdriver.Chrome()
+driver = webdriver.Firefox()
+#driver = webdriver.Ie()
+
+# Set driver timeout in secs
+driver.set_page_load_timeout(15)
 
 def databasetest(na,pa,passfail):
     a = 0
@@ -17,7 +25,7 @@ def databasetest(na,pa,passfail):
         if file.endswith(".db"):
             a += 1
 
-    testnewuser(na,pa)
+    #testnewuser(na,pa)
 
     for file in os.listdir("."):
         if file.endswith(".db"):
@@ -32,4 +40,4 @@ def databasetest(na,pa,passfail):
     else:
         print("Unit test Fail")
 
-databasetest("testnewuser","testnewuser", "fail")
+#databasetest("testnewuser","testnewuser", "fail")

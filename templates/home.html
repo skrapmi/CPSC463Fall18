@@ -19,6 +19,8 @@
  <link rel="stylesheet" href="/resources/demos/style.css">
  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 
 
 
@@ -31,7 +33,7 @@
 <body>
   <header>
     <div class="top-tray">
-      <input type="text" name="" class="log-out-button" value="Log Out" onclick="document.getElementById('').style.display='block'" style="width:auto;">
+    <input type="text" name="" class="log-out-button" value="Log Out" onclick="window.location.href='/'" style="width:auto;">
       <input type="text" class="logo" value="Events Page">
     </div>
   </header>
@@ -43,38 +45,38 @@
       <div class="panel panel-info panel-widget">
         <div class="panel-body">
           <div id="hacker-list">
-            <ul class="list">
+            <ol class="list">
                   <li data-id="1">
-                    <div class="friend">
+                    <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='cpt_america.png') }}"/><a href="#" class="friend-name">Johnny</a></p>
                     </div>
                   </li>
                   <li data-id="2">
-                    <div class="friend">
+                    <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='ironman.png') }}"/><a href="#" class="friend-name">Sandra</a></p>
                     </div>
                   </li>
                   <li data-id="3">
-                    <div class="friend">
+                    <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='thor.png') }}"/><a href="#" class="friend-name">Ralph</a></p>
                     </div>
                   </li>
                   <li data-id="4">
-                    <div class="friend">
+                    <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='iron-man-2507706_1280.png') }}"/><a href="#" class="friend-name">Andrew</a></p>
                     </div>
                   </li>
                   <li data-id="5">
-                    <div class="friend">
+                    <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='captain-marvel-2977923_1280.jpg') }}"/><a href="#" class="friend-name">Sasha</a></p>
                     </div>
                   </li>
                   <li data-id="6">
-                    <div class="friend">
+                    <div class="">
                       <p><img class="friend-icon" src="{{ url_for('static', filename='spiderman-3309033_1280.jpg') }}"/><a href="#" class="friend-name">Peter</a></p>
                     </div>
                   </li>
-            </ul>
+            </ol>
           </div>
         </div>
       </div>
@@ -82,12 +84,13 @@
 
     <div class="column">
       <div class="panel-title text-center">
-        <p>Add New Event<span class="fa fa-plus-circle" style="font-size:24px" style="cursor:pointer" onclick="document.getElementById('id03').style.display='block'"></span></p>
+        <p>Add New Event<span class="fa fa-plus-circle" style="font-size:24px" onclick="document.getElementById('id03').style.display='block'"></span></p>
       </div>
-      <form method="POST" action='/eventitems/'>
+
+      <form method="POST" action="/eventitems/">
         {% for i in msg %}
           <div class="col-sm-offset-3">
-            <input type="submit" name="button" class="block" value="{{i[1]}} on {{i[3]}}"> <!--style="font-size:24px">{{i[0]}} on {{i[1]}}</button>-->
+            <input type="submit" name="button" class="block" value="{{i[1]}} on {{i[3]}}">
           </div>
         {% endfor %}
       </form>
@@ -104,7 +107,7 @@
     <div class="row">
       <div id="id03" class="modal w3-animate-opacity" role="dialog">
         <div class="modal-dialog ">
-          <form class="modal-content" action="/addevent/">
+          <form class="modal-content" action="/addevent/" method="">
             <!--Modal Header-->
             <div class="modal-header">
               <h4 class="modal-title">Create A New Event</h4>
@@ -113,12 +116,7 @@
             <div class="modal-body">
               <p>Event Name: <input type="text" name="event" value="event" required></p>
               <p>Location: <input type="text" autocomplete="off" name="location" value="" required></p>
-              <p>Event Date: <input type="text" id="datepicker" autocomplete="off" name="date" value="" required></p>
-
-                <!-- <hr>
-                <p>Upload a Receipt:</p>
-                <input type="file" name="fileToUpload" id="fileToUpload">
-                <input type="submit" value="Upload Image" name="submit"> -->
+              <p>Event Date: <input type="text" name ="date" required></p>
             </div>
             <!--Modal Footer-->
             <div class="modal-footer">
@@ -148,8 +146,8 @@
             </div>
             <!--Modal Body-->
             <div class="modal-body">
-              <p>Event Date: <input type="text" name="" readonly></p></p>
-              <p>Collaborator: <input type="text" name="" readonly></p></p>
+              <p>Event Date: <input type="text" name="" readonly></p>
+              <p>Collaborator: <input type="text" name="" readonly></p>
             </div>
             <!--Modal Footer-->
             <div class="modal-footer">
@@ -168,7 +166,7 @@
   <footer>
     <div class="bottom-tray">
       <p>About Us | Jobs | How It Works | Contact Us</p>
-      <p>&copy 2018 *Placeholder*</p>
+      <p>Who owes who? &copy 2018</p>
       <a href="#" class="fa fa-facebook"></a>
       <a href="#" class="fa fa-twitter"></a>
       <a href="#" class="fa fa-snapchat-ghost"></a>
